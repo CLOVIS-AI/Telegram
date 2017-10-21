@@ -52,10 +52,6 @@ public abstract class Message{
      * @throws MandatoryFieldOmittedException if mandatory fields are omitted
      */
     public Message(JsonObject json) throws MandatoryFieldOmittedException{
-<<<<<<< HEAD
-=======
-        super(json);
->>>>>>> c0b2730392b90987b1050c788874231d37f18858
         ID = json.getLong("message_id", 0);
         FROM = new User(json.get("from").asObject());
         AUTHOR_SIGNATURE = json.getString("author_signature", null);
