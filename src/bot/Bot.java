@@ -46,6 +46,7 @@ import minimaljson.JsonValue;
  *         // What the bot should do when it recieves an update (new messages, edited messages, queries, ...)
  *     }
  * };
+ * myBot.autoUpdate(); // To launch the bot (see {@link Bot#autoUpdate() autoUpdate()} for more informations).
  *     </pre>
  *   </li>
  *   <li>That's it ! You can run your code, the bot is working ! You just have to 
@@ -56,7 +57,7 @@ import minimaljson.JsonValue;
  * 
  * @author CLOVIS
  */
-public abstract class Bot implements Runnable {
+public abstract class Bot{
     
     /** Token as provided by BotFather. */
     private final String TOKEN;
@@ -67,22 +68,19 @@ public abstract class Bot implements Runnable {
     /** Username of this bot. */
     public final String USERNAME;
     
-    /** Updater. */
-    private final Thread updater;
-    
     /** Time between two updates. */
     private long updateTimeout;
+    
+    private boolean autoUpdateActivated = false;
     
     /**
      * Creates a bot and connects it to the Telegram servers, and prints to the
      * standard output the identity of the bot.<br>
      * By default, the bot will start a thread to update itself every 5 seconds.
-     * To disable the thread, use {@link #stop() stop()} ; to set the update
-     * frequency, see {@link}
+     * To set the update frequency, see {@link}.
      * @param token token provided by BotFather
      */
     public Bot(String token){
-        updater = new Thread(this);
         TOKEN = token;
         JsonObject me = http("getMe").asObject().get("result").asObject();
         ID = me.getLong("id", 0);
@@ -121,21 +119,35 @@ public abstract class Bot implements Runnable {
      * Connects to the Telegram server to get new updates, then calls
      * {@link #onUpdate(bot.updates.Update) onUpdate()} on every update.
      */
-    public final synchronized void update(){
+    public synchronized final void update(){
         JsonArray updates = http("getUpdates").asArray();
         for(JsonValue value : updates){
             onUpdate(Update.newUpdate((JsonObject)value));
         }
     }
     
-    @Override
-    public synchronized final void run() {
-        update();
-        try {
-            this.wait(updateTimeout);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Bot.class.getName()).log(Level.SEVERE, null, ex);
+    /**
+     * Call to get automatical updates. This method will never end, as long as
+     * the thread calling it is alive.<br>
+     * To get updates without blocking the code flow, use {@link #update() }.
+     * @exception IllegalThreadStateException if called twice at the same time
+     */
+    @SuppressWarnings("SleepWhileInLoop")
+    public final void autoUpdate() throws IllegalThreadStateException {
+        if(autoUpdateActivated){
+            throw new IllegalThreadStateException("This method cannot be called by two threads.");
         }
+        autoUpdateActivated = true;
+        
+        while(Thread.currentThread().isAlive()){
+            update();
+            try {
+                Thread.sleep(updateTimeout);
+            } catch (InterruptedException ex) {
+                System.err.println(ex.toString());
+            }
+        }
+        autoUpdateActivated = false;
     }
     
     /**
@@ -186,14 +198,5 @@ public abstract class Bot implements Runnable {
      */
     private JsonValue http(String method){
         return http(method, Json.parse("{\"status\":null}").asObject());
-    }
-    
-    /**
-     * Calls {@link Thread#interrupt()} on the bot's thread. This makes the bot unable
-     * to get automatic updates. The bot is still able to work properly though,
-     * if you call {@link #update() update()} manually.
-     */
-    public final void stop(){
-        updater.interrupt();
     }
 }
