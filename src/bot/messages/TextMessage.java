@@ -8,7 +8,6 @@ package bot.messages;
 import bot.MandatoryFieldOmittedException;
 import minimaljson.JsonArray;
 import minimaljson.JsonObject;
-import minimaljson.JsonValue;
 
 /**
  *
@@ -22,11 +21,19 @@ public class TextMessage extends Message {
     public TextMessage(JsonObject json) throws MandatoryFieldOmittedException {
         super(json);
         TEXT = json.getString("text", null);
-        JsonArray entities = json.get("entities").asArray();
-        ENTITIES = new MessageEntity[entities.size()];
-        for(int i = 0; i < entities.size(); i++){
-            ENTITIES[i] = new MessageEntity(entities.get(i).asObject(), TEXT);
+        JsonArray entities;
+        try{
+            entities = json.get("entities").asArray();
+        }catch(NullPointerException e){
+            entities = null;
+        }
+        if(entities != null){
+            ENTITIES = new MessageEntity[entities.size()];
+            for(int i = 0; i < entities.size(); i++){
+                ENTITIES[i] = new MessageEntity(entities.get(i).asObject(), TEXT);
+            }
+        }else{
+            ENTITIES = null;
         }
     }
-    
 }
