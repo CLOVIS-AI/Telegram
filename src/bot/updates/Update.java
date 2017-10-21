@@ -31,7 +31,7 @@ public abstract class Update {
         else if(json.get("edited_channel_post") != null){ return new EditedChannelPostUpdate(json); }
         // TODO
         else{
-            throw new UnsupportedOperationException("This update is either invalid or not yet implemented in the API :\n" + json.asString());
+            throw new UnsupportedOperationException("This update is either invalid or not yet implemented in the API :\n" + json.toString());
         }
     }
 }
