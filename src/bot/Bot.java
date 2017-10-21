@@ -56,12 +56,10 @@ public class Bot {
     
     public void onUpdate(Update update){}
     
-    public void onEditedMessage(Message message){onUpdate(message);}
-    
     public final void update(){
         JsonArray updates = http("getUpdates").asArray();
         for(JsonValue value : updates){
-            
+            onUpdate(Update.newUpdate((JsonObject)value));
         }
     }
     
