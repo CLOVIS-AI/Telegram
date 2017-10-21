@@ -121,13 +121,9 @@ public abstract class Bot{
      */
     public synchronized final void update(){
         JsonValue request = http("getUpdates").asObject().get("result");
-        try{
-            JsonArray updates = request.asArray();
-            for(JsonValue value : updates){
-                onUpdate(Update.newUpdate((JsonObject) value));
-            }
-        }catch(UnsupportedOperationException e){
-            onUpdate(Update.newUpdate((JsonObject) request));
+        JsonArray updates = request.asArray();
+        for(JsonValue value : updates){
+            onUpdate(Update.newUpdate((JsonObject) value));
         }
     }
     
