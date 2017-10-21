@@ -15,7 +15,7 @@ import minimaljson.JsonObject;
  *
  * @author CLOVIS
  */
-public abstract class Message extends Update {
+public abstract class Message{
     
     /** Unique message identifier inside this chat. */
     public final long ID;
@@ -52,7 +52,6 @@ public abstract class Message extends Update {
      * @throws MandatoryFieldOmittedException if mandatory fields are omitted
      */
     public Message(JsonObject json) throws MandatoryFieldOmittedException{
-        super(json);
         ID = json.getLong("message_id", 0);
         FROM = new User(json.get("from").asObject());
         AUTHOR_SIGNATURE = json.getString("author_signature", null);
