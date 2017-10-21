@@ -9,6 +9,7 @@ import bot.Chat;
 import bot.MandatoryFieldOmittedException;
 import bot.User;
 import bot.updates.Update;
+import minimaljson.JsonArray;
 import minimaljson.JsonObject;
 
 /**
@@ -83,12 +84,10 @@ public abstract class Message{
     
     
     public static final Message newMessage(JsonObject json) throws MandatoryFieldOmittedException{
-        if(json.getString("text", null) != null){
-            return new TextMessage(json);
-        }else if(json.getInt("duration", -1) != -1){
-            return new AudioMessage(json);
-        }
-        
+        if(json.getString("text", null) != null){ return new TextMessage(json); }
+        else if(json.getInt("duration", -1) != -1){ return new AudioMessage(json); }
+        else if(json.get("new_chat_members") != null){ return new NewMembers(json); }
+        else if(json.get("left_chat_member") != null){ return new LeftMember(json); }
         else{
             throw new UnsupportedOperationException("This type of message is not supported : " + json.toString());
         }
