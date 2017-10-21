@@ -5,11 +5,13 @@
  */
 package bot;
 
+import minimaljson.JsonValue;
+
 /**
  *
  * @author CLOVIS
  */
-public class MandatoryFieldOmittedException extends Exception {
+public class MandatoryFieldOmittedException extends RuntimeException {
 
     /**
      * Creates a new instance of <code>MandatoryFieldOmittedException</code>
@@ -23,8 +25,9 @@ public class MandatoryFieldOmittedException extends Exception {
      * with the specified detail message.
      *
      * @param msg the detail message.
+     * @param json the json object that caused it.
      */
-    public MandatoryFieldOmittedException(String msg) {
-        super(msg);
+    public MandatoryFieldOmittedException(String msg, JsonValue json) {
+        super(msg + "\n" + json.asString());
     }
 }

@@ -24,4 +24,15 @@ public abstract class Update {
         ID = json.getInt("update_id", 0);
     }
     
+    public static Update newUpdate(JsonObject json){
+        if     (json.get("message") != null){ return new MessageUpdate(json); }
+        else if(json.get("edited_message") != null){ return new EditedMessageUpdate(json); }
+        else if(json.get("channel_post") != null){ return new ChannelPostUpdate(json); }
+        else if(json.get("edited_channel_post") != null){ return new EditedChannelPostUpdate(json); }
+        // TODO
+        else{
+            throw new UnsupportedOperationException("This update is either invalid or not yet implemented in the API :\n" + json.asString());
+        }
+    }
+    
 }

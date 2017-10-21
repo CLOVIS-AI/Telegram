@@ -34,7 +34,7 @@ public class User {
         LANGUAGE =   json.getString("language_code", null);
         
         if(ID == 0 || FIRST_NAME == null){
-            throw new MandatoryFieldOmittedException("Either the ID or the first name was omitted.");
+            throw new MandatoryFieldOmittedException("Either the ID or the first name was omitted.", json);
         }
     }
     

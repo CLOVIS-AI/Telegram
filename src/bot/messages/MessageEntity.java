@@ -45,7 +45,7 @@ public class MessageEntity {
         USER = new User(json.get("user").asObject());
         
         if(OFFSET == -1 || LENGTH == -1)
-            throw new MandatoryFieldOmittedException("Offset and Length are mandatory fields.");
+            throw new MandatoryFieldOmittedException("Offset and Length are mandatory fields.", json);
     }
     
     /**

@@ -47,7 +47,7 @@ public class Chat {
         INVITE_LINK =       json.getString("invite_link", null);
         
         if(ID == 0){
-            throw new MandatoryFieldOmittedException("Field ID is mandatory.");
+            throw new MandatoryFieldOmittedException("Field ID is mandatory.", json);
         }
     }
     
