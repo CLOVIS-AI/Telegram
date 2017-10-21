@@ -58,13 +58,25 @@ public abstract class Message{
         DATE = json.getInt("date", 0);
         CHAT = new Chat(json.get("chat").asObject());
         
-        FORWARD_FROM = new User(json.get("forward_from").asObject());
-        FORWARD_FROM_CHANNEL = new Chat(json.get("forward_from_chat").asObject());
+        User fwdFrm;
+        try{ fwdFrm = new User(json.get("forward_from").asObject()); }
+        catch(NullPointerException e){ fwdFrm = null; }
+        FORWARD_FROM = fwdFrm;
+        
+        Chat fwdFrmChn;
+        try{ fwdFrmChn = new Chat(json.get("forward_from_chat").asObject()); }
+        catch(NullPointerException e){ fwdFrmChn = null; }
+        FORWARD_FROM_CHANNEL = fwdFrmChn;
+        
         FORWARD_FROM_MESSAGE_ID = json.getInt("forward_from_message_id", 0);
         FORWARD_SIGNATURE = json.getString("forward_signature", null);
         FORWARD_DATE = json.getInt("forward_date", 0);
         
-        REPLY_TO_MESSAGE = newMessage(json.get("reply_to_message").asObject());
+        Message rpl;
+        try{ rpl = newMessage(json.get("reply_to_message").asObject()); }
+        catch(NullPointerException e){ rpl = null; }
+        REPLY_TO_MESSAGE = rpl;
+        
         LAST_EDIT = json.getInt("edit_date", 0);
     }
     
