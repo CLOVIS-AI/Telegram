@@ -24,6 +24,7 @@ public abstract class Update {
         ID = json.getInt("update_id", 0);
     }
     
+<<<<<<< HEAD
     public static Update newUpdate(JsonObject json){
         if     (json.get("message") != null){ return new MessageUpdate(json); }
         else if(json.get("edited_message") != null){ return new EditedMessageUpdate(json); }
@@ -34,4 +35,7 @@ public abstract class Update {
             throw new UnsupportedOperationException("This update is either invalid or not yet implemented in the API :\n" + json.asString());
         }
     }
+    
+=======
+>>>>>>> c0b2730392b90987b1050c788874231d37f18858
 }
