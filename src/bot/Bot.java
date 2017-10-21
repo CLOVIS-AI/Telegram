@@ -5,10 +5,7 @@
  */
 package bot;
 
-import bot.messages.AudioMessage;
-import bot.messages.FileMessage;
 import bot.messages.Message;
-import bot.messages.TextMessage;
 import bot.updates.Update;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -58,11 +55,6 @@ public class Bot {
     }
     
     public void onUpdate(Update update){}
-    
-    public void onMessage(Message message){onUpdate(message);}
-    public void onTextMessage(TextMessage message){onMessage(message);}
-    public void onFile(FileMessage message){onMessage(message);}
-    public void onAudioMessage(AudioMessage message){onFile(message);}
     
     public void onEditedMessage(Message message){onUpdate(message);}
     
