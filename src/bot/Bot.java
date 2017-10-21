@@ -120,9 +120,14 @@ public abstract class Bot{
      * {@link #onUpdate(bot.updates.Update) onUpdate()} on every update.
      */
     public synchronized final void update(){
-        JsonArray updates = http("getUpdates").asArray();
-        for(JsonValue value : updates){
-            onUpdate(Update.newUpdate((JsonObject)value));
+        JsonValue request = http("getUpdates").asObject().get("result");
+        try{
+            JsonArray updates = request.asArray();
+            for(JsonValue value : updates){
+                onUpdate(Update.newUpdate((JsonObject) value));
+            }
+        }catch(UnsupportedOperationException e){
+            onUpdate(Update.newUpdate((JsonObject) request));
         }
     }
     
