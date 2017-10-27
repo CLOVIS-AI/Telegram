@@ -12,7 +12,7 @@ import minimaljson.JsonObject;
  *
  * @author CLOVIS
  */
-class EditedMessageUpdate extends Update {
+public class EditedMessageUpdate extends Update {
 
     /** The message that was updated in this update. */
     public final Message MESSAGE;

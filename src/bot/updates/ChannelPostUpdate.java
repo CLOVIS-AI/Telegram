@@ -12,7 +12,7 @@ import minimaljson.JsonObject;
  *
  * @author CLOVIS
  */
-class ChannelPostUpdate extends Update {
+public class ChannelPostUpdate extends Update {
 
     /** The message that was sent to the channel. */
     public final Message MESSAGE;
