@@ -126,7 +126,7 @@ public abstract class Bot{
         for(JsonValue value : updates){
             Update u = Update.newUpdate((JsonObject) value);
             onUpdate(u);
-            maxUpdateID = max(u.UPDATE_ID, maxUpdateID) + 1;
+            maxUpdateID = max(u.UPDATE_ID, maxUpdateID)+1;
         }
     }
     
