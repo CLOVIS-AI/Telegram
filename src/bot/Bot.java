@@ -16,6 +16,9 @@ import static java.lang.Math.max;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.HttpURLConnection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import minimaljson.Json;
 import minimaljson.JsonArray;
 import minimaljson.JsonObject;
@@ -144,7 +147,8 @@ public abstract class Bot{
         autoUpdateActivated = true;
         
         while(Thread.currentThread().isAlive()){
-            System.out.println("Auto-updating bot ...");
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            System.out.println(dateFormat.format(new Date()) + "\tAuto-updating bot ...");
             update();
             //System.exit(0);
             try {
