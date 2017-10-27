@@ -91,6 +91,7 @@ public abstract class Message{
         else if(json.get("left_chat_member") != null){ return new LeftMember(json); }
         else if(json.get("photo") != null){ return new PhotoMessage(json); }
         else if(json.get("sticker") != null){ return new StickerMessage(json); }
+        else if(json.get("document") != null){ return new DocumentMessage(json); }
         else{
             throw new UnsupportedOperationException("This type of message is not supported : " + json.toString());
         }
