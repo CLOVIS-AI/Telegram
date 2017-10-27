@@ -40,5 +40,9 @@ public class PhotoMessage extends Message {
         }
     }
     
+    @Override
+    public String toString(){
+        return super.toString() + " sent a photo ; " + PHOTO.length + " sizes (eg. " + PHOTO[0].ID + ").";
+    }
     
 }

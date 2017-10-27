@@ -26,4 +26,8 @@ class EditedMessageUpdate extends Update {
         MESSAGE = Message.newMessage(json.get("edited_message").asObject());
     }
     
+    @Override
+    public String toString(){
+        return "EG " + MESSAGE.toString();
+    }
 }

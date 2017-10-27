@@ -26,4 +26,8 @@ public class MessageUpdate extends Update {
         MESSAGE = Message.newMessage(json.get("message").asObject());
     }
     
+    @Override
+    public String toString(){
+        return "NG " + MESSAGE.toString();
+    }
 }

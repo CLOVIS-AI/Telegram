@@ -28,4 +28,8 @@ public class StickerMessage extends Message {
         STICKER = new Sticker(json.get("sticker").asObject());
     }
     
+    @Override
+    public String toString(){
+        return super.toString() + " sent a sticker : " + STICKER.toString();
+    }
 }

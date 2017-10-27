@@ -79,7 +79,10 @@ public abstract class Message{
         LAST_EDIT = json.getInt("edit_date", 0);
     }
     
-    
+    @Override
+    public String toString(){
+        return CHAT.toString() + " > " + (FROM == null ? FROM.toString() : (AUTHOR_SIGNATURE == null ? "" : AUTHOR_SIGNATURE));
+    }
     
     public static final Message newMessage(JsonObject json) throws MandatoryFieldOmittedException{
         if(json.getString("text", null) != null){ return new TextMessage(json); }

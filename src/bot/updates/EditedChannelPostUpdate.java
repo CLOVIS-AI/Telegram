@@ -26,4 +26,8 @@ class EditedChannelPostUpdate extends Update {
         MESSAGE = Message.newMessage(json.get("edited_channel_post").asObject());
     }
     
+    @Override
+    public String toString(){
+        return "EC " + MESSAGE.toString();
+    }
 }

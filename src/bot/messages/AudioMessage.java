@@ -28,4 +28,8 @@ public class AudioMessage extends FileMessage {
         TITLE = json.getString("title", null);
     }
     
+    @Override
+    public String toString(){
+        return super.toString() + " sent an audio.";
+    }
 }

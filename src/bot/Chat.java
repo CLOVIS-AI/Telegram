@@ -28,12 +28,12 @@ public class Chat {
     public final String LAST_NAME;
     /** (Optional)<br> True if a group has "All members are admins" enabled. */
     public final boolean ALL_MEMBERS_ADMIN;
-    // PHOTO
+    // @TODO : PHOTO
     /** (Optional : only with Bot.getChat)<br> Description of the group for supergroups and channels. */
     public final String DESCRIPTION;
     /** (Optional : only with Bot.getChat, supergroup or channel)<br> Invite link to this chat. */
     public final String INVITE_LINK;
-    // Pinned message
+    // @TODO : pinned message
     
     public Chat(JsonObject json) throws MandatoryFieldOmittedException{
         ID =                json.getLong("id", 0);
@@ -49,6 +49,11 @@ public class Chat {
         if(ID == 0){
             throw new MandatoryFieldOmittedException("Field ID is mandatory.", json);
         }
+    }
+    
+    @Override
+    public String toString(){
+        return (TITLE == null ? "No_Title" : TITLE) + " (" + (USERNAME == null ? ID : "@" + USERNAME) + ")";
     }
     
     /**

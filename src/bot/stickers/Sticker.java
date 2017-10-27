@@ -63,4 +63,8 @@ public class Sticker {
             throw new MandatoryFieldOmittedException("'file_id', 'width' and 'height' should not be omitted", json);
     }
     
+    @Override
+    public String toString(){
+        return ID + " in " + SET_NAME;
+    }
 }

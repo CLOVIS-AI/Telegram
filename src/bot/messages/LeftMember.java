@@ -26,4 +26,8 @@ class LeftMember extends Message {
         USER = new User(json.get("left_chat_member").asObject());
     }
     
+    @Override
+    public String toString(){
+        return super.toString() + " left the group.";
+    }
 }

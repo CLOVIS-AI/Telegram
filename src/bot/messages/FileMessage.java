@@ -36,4 +36,8 @@ public abstract class FileMessage extends Message {
             throw new MandatoryFieldOmittedException("The file ID is a mandatory field", json);
     }
     
+    @Override
+    public String toString(){
+        return super.toString() + " [" + ID + "]" ;
+    }
 }

@@ -15,7 +15,11 @@ import minimaljson.JsonObject;
  */
 public class TextMessage extends Message {
 
+    /** Actual UTF-8 text of the message, 0-4096 characters. */
     public final String TEXT;
+    
+    /** (Optional)<br>Special entities like usernames, URLs, bot commands that appear in the text.
+     <br><br>If not present, initialized as an empty array (<code>ENTITIES.length = 0</code>)*/
     public final MessageEntity[] ENTITIES;
     
     public TextMessage(JsonObject json) throws MandatoryFieldOmittedException {
@@ -33,7 +37,12 @@ public class TextMessage extends Message {
                 ENTITIES[i] = new MessageEntity(entities.get(i).asObject(), TEXT);
             }
         }else{
-            ENTITIES = null;
+            ENTITIES = new MessageEntity[0];
         }
+    }
+    
+    @Override
+    public String toString(){
+        return super.toString() + " : " + TEXT.replace('\n', '\\');
     }
 }

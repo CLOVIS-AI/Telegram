@@ -50,4 +50,8 @@ public class User {
         }
     }
     
+    @Override
+    public String toString(){
+        return (USERNAME == null ? FIRST_NAME : "@" + USERNAME) + " (" + ID + ")";
+    }
 }

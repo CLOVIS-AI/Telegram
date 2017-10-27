@@ -26,4 +26,9 @@ class ChannelPostUpdate extends Update {
         MESSAGE = Message.newMessage(json.get("channel_post").asObject());
     }
     
+    @Override
+    public String toString(){
+        return "NC " + MESSAGE.toString();
+    }
+    
 }

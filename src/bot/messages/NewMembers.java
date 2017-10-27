@@ -31,4 +31,11 @@ class NewMembers extends Message {
         }
     }
     
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        for(User u : USERS)
+            sb.append(u.toString());
+        return super.toString() + sb.toString() + " joined the group";
+    }
 }
