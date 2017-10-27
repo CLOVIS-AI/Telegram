@@ -9,6 +9,7 @@ import bot.Chat;
 import bot.MandatoryFieldOmittedException;
 import bot.User;
 import minimaljson.JsonObject;
+import minimaljson.JsonValue;
 
 /**
  *
@@ -27,16 +28,15 @@ public abstract class Message{
     /** Converstation this message belongs to. */
     public final Chat CHAT;
     
-    /** (Optional : forwarded)<br> Sender of the original message. */
-    public final User FORWARD_FROM;
-    /** (Optional : forwarded from channel)<br> Information about the channel. */
-    public final Chat FORWARD_FROM_CHANNEL;
-    /** (Optional : forwarded from channel)<br> Identifier of the orginal message. */
-    public final int  FORWARD_FROM_MESSAGE_ID;
-    /** (Optional : forwarded from channel)<br> Signature of the post author if present. */
-    public final String FORWARD_SIGNATURE;
-    /** (Optional : forwarded)<br> Date the original message was sent in Unix time. */
-    public final int  FORWARD_DATE;
+    /**
+     * Informations about who forwarded this message. It can hold either :
+     * <ul>
+     * <li><code>null</code> - if this message was not forwarded,</li>
+     * <li>A {@link ForwardDataUser} object - if this message was forwarded from a group : data about the original user,</li>
+     * <li>A {@link ForwardDataChannel} object - if this message was forwarded from a channel : data about the channel.</li>
+     * </ul>
+     */
+    public final ForwardData FORWARD;
     
     /** (Optional : replies)<br> The original message. 
      * It will not contain further <code>reply_to_message</code> fields even if it
@@ -57,19 +57,12 @@ public abstract class Message{
         DATE = json.getInt("date", 0);
         CHAT = new Chat(json.get("chat").asObject());
         
-        User fwdFrm;
-        try{ fwdFrm = new User(json.get("forward_from").asObject()); }
-        catch(NullPointerException e){ fwdFrm = null; }
-        FORWARD_FROM = fwdFrm;
-        
-        Chat fwdFrmChn;
-        try{ fwdFrmChn = new Chat(json.get("forward_from_chat").asObject()); }
-        catch(NullPointerException e){ fwdFrmChn = null; }
-        FORWARD_FROM_CHANNEL = fwdFrmChn;
-        
-        FORWARD_FROM_MESSAGE_ID = json.getInt("forward_from_message_id", 0);
-        FORWARD_SIGNATURE = json.getString("forward_signature", null);
-        FORWARD_DATE = json.getInt("forward_date", 0);
+        if(json.get("forward_from") != null)
+            FORWARD = new ForwardDataUser(json);
+        else if(json.get("forward_from_channel") != null)
+            FORWARD = new ForwardDataChannel(json);
+        else
+            FORWARD = null;
         
         Message rpl;
         try{ rpl = newMessage(json.get("reply_to_message").asObject()); }
@@ -95,6 +88,60 @@ public abstract class Message{
         else if(json.get("voice") != null){ return new VoiceMessage(json); }
         else{
             throw new UnsupportedOperationException("This type of message is not supported : " + json.toString());
+        }
+    }
+    
+    /**
+     * Data of a forward. Can be either {@link ForwardDataUser} or {@link ForwardDataChannel}.
+     */
+    public abstract class ForwardData{
+        /** Date the original message was sent in Unix time. */
+        public final int DATE;
+        
+        public ForwardData(JsonObject json){
+            DATE = json.getInt("forward_date", 0);
+        }
+    }
+    
+    /**
+     * Data of the forward from a user.
+     */
+    public class ForwardDataUser extends ForwardData {
+        /** Sender of the original message. */
+        public final User USER;
+
+        public ForwardDataUser(JsonObject json) {
+            super(json);
+            JsonValue ja = json.get("forward_from");
+            if(ja != null)
+                USER = new User(ja.asObject());
+            else
+                USER = null;
+        }
+    }
+    
+    /**
+     * Data of the forward from a channel.
+     */
+    public class ForwardDataChannel extends ForwardData {
+        /** Information about the channel. */
+        public final Chat CHANNEL;
+        /** Identifier of the orginal message. */
+        public final long ID;
+        /** (Optional)<br> Signature of the post author if present. */
+        public final String SIGNATURE;
+
+        public ForwardDataChannel(JsonObject json) {
+            super(json);
+            
+            JsonValue ja = json.get("forward_from_channel");
+            if(ja != null)
+                CHANNEL = new Chat(ja.asObject());
+            else
+                CHANNEL = null;
+            
+            ID = json.getLong("forward_from_message_id", -1);
+            SIGNATURE = json.getString("forward_signature", null);
         }
     }
 }
