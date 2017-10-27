@@ -6,7 +6,7 @@
 package bot.messages;
 
 import bot.MandatoryFieldOmittedException;
-import bot.stickers.Sticker;
+import types.stickers.Sticker;
 import minimaljson.JsonObject;
 
 /**
