@@ -42,7 +42,10 @@ public class MessageEntity {
         LENGTH = json.getInt("length", -1);
         TEXT = fullText.substring(OFFSET, OFFSET+LENGTH);
         URL = json.getString("url", null);
-        USER = new User(json.get("user").asObject());
+        if(json.get("user") != null)
+            USER = new User(json.get("user").asObject());
+        else
+            USER = null;
         
         if(OFFSET == -1 || LENGTH == -1)
             throw new MandatoryFieldOmittedException("Offset and Length are mandatory fields.", json);
@@ -100,7 +103,7 @@ public class MessageEntity {
          */
         public static Type fromString(String type){
             switch(type){
-                case "username":    return USERNAME;
+                case "mention":     return USERNAME;
                 case "hashtag":     return HASHTAG;
                 case "bot_command": return BOT_COMMAND;
                 case "url":         return URL;
@@ -111,7 +114,7 @@ public class MessageEntity {
                 case "pre":         return CODE_BLOCK;
                 case "text_link":   return TEXT_URL;
                 case "text_mention":return MENTION;
-                default: throw new IllegalArgumentException("The content of the String is invalid.");
+                default: throw new IllegalArgumentException("The content of the String is invalid : " + type);
             }
         }
     }

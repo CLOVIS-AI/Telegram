@@ -23,17 +23,19 @@ public abstract class FileMessage extends Message {
     
     /**
      * Creates a FileMessage object.
-     * @param json source of the content, as provided by the Telegram servers
+     * @param message source of the content, as provided by the Telegram servers
+     * @param json same, but targetted on the file
      * @throws MandatoryFieldOmittedException if the field FILE_ID is omitted
      */
-    public FileMessage(JsonObject json) throws MandatoryFieldOmittedException {
-        super(json);
+    public FileMessage(JsonObject message, JsonObject json) throws MandatoryFieldOmittedException {
+        super(message);
+        
         FILE_ID = json.getString("file_id", null);
         MIME_TYPE = json.getString("mime_type", null);
         FILE_SIZE = json.getInt("file_size", 0);
         
         if(FILE_ID == null)
-            throw new MandatoryFieldOmittedException("The file ID is a mandatory field", json);
+            throw new MandatoryFieldOmittedException("The fileID is a mandatory field", json);
     }
     
     @Override

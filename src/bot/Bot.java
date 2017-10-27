@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import static java.lang.Math.max;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.HttpURLConnection;
@@ -71,6 +72,8 @@ public abstract class Bot{
     
     private boolean autoUpdateActivated = false;
     
+    private long maxUpdateID = 0;
+    
     /**
      * Creates a bot and connects it to the Telegram servers, and prints to the
      * standard output the identity of the bot.<br>
@@ -118,10 +121,12 @@ public abstract class Bot{
      * {@link #onUpdate(bot.updates.Update) onUpdate()} on every update.
      */
     public synchronized final void update(){
-        JsonValue request = http("getUpdates").asObject().get("result");
+        JsonValue request = http("getUpdates?offset=" + maxUpdateID + "&timeout="+60).asObject().get("result");
         JsonArray updates = request.asArray();
         for(JsonValue value : updates){
-            onUpdate(Update.newUpdate((JsonObject) value));
+            Update u = Update.newUpdate((JsonObject) value);
+            onUpdate(u);
+            maxUpdateID = max(u.UPDATE_ID, maxUpdateID) + 1;
         }
     }
     
@@ -139,7 +144,9 @@ public abstract class Bot{
         autoUpdateActivated = true;
         
         while(Thread.currentThread().isAlive()){
+            System.out.println("Auto-updating bot ...");
             update();
+            //System.exit(0);
             try {
                 Thread.sleep(updateTimeout);
             } catch (InterruptedException ex) {
@@ -182,7 +189,7 @@ public abstract class Bot{
         } catch (UnsupportedEncodingException | MalformedURLException ex){
             System.err.println("Unexpected error : " + ex.toString());
         } catch (FileNotFoundException ex){
-            System.err.println("The command " + method + " does not exist.");
+            System.err.println("The command " + method + " does not exist : " + ex.getMessage());
         } catch (IOException ex) {
             System.err.println("ERROR WHILE SENDING MESSAGE : " + ex.getMessage());
         }

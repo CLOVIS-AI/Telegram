@@ -81,7 +81,7 @@ public abstract class Message{
     
     @Override
     public String toString(){
-        return CHAT.toString() + " > " + (FROM == null ? FROM.toString() : (AUTHOR_SIGNATURE == null ? "" : AUTHOR_SIGNATURE));
+        return CHAT.toString() + " > " + (FROM != null ? FROM.toString() : (AUTHOR_SIGNATURE == null ? "" : AUTHOR_SIGNATURE));
     }
     
     public static final Message newMessage(JsonObject json) throws MandatoryFieldOmittedException{

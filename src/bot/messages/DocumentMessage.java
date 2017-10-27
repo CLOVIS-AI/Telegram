@@ -27,14 +27,15 @@ public class DocumentMessage extends FileMessage {
      * @throws MandatoryFieldOmittedException 
      */
     public DocumentMessage(JsonObject json) throws MandatoryFieldOmittedException {
-        super(json);
+        super(json, json.get("document").asObject());
         
-        if(json.get("thumb") != null)
-            THUMBNAIL = new PhotoSize(json.get("thumb").asObject());
+        JsonObject ja = json.get("document").asObject();
+        if(ja.get("thumb") != null)
+            THUMBNAIL = new PhotoSize(ja.get("thumb").asObject());
         else
             THUMBNAIL = null;
         
-        NAME = json.getString("file_name", null);
+        NAME = ja.getString("file_name", null);
     }
     
     @Override

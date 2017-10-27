@@ -22,10 +22,12 @@ public class AudioMessage extends FileMessage {
     public final String TITLE;
     
     public AudioMessage(JsonObject json) throws MandatoryFieldOmittedException {
-        super(json);
-        DURATION = json.getInt("duration", -1);
-        PERFORMER = json.getString("performer", null);
-        TITLE = json.getString("title", null);
+        super(json, json.get("audio").asObject());
+        
+        JsonObject ja = json.get("audio").asObject();
+        DURATION = ja.getInt("duration", -1);
+        PERFORMER = ja.getString("performer", null);
+        TITLE = ja.getString("title", null);
     }
     
     @Override
