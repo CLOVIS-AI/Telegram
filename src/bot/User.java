@@ -13,11 +13,23 @@ import minimaljson.JsonObject;
  */
 public class User {
     
+    /** Unique identifier of this user. */
     public final long ID;
+    
+    /** Is this user a bot ? */
     public final boolean IS_BOT;
+    
+    /** First name of the user. */
     public final String FIRST_NAME;
+    
+    /** (Optional)<br>Last name of the user. */
     public final String LAST_NAME;
+    
+    /** (Optional)<br>The user's username. */
     public final String USERNAME;
+    
+    /** (Optional)<br><a href="https://en.wikipedia.org/wiki/IETF_language_tag">
+     * IETF language tag</a> of the user's language. */
     public final String LANGUAGE;
     
     /**
