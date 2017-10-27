@@ -33,7 +33,7 @@ public abstract class FileMessage extends Message {
         FILE_SIZE = json.getInt("file_size", 0);
         
         if(FILE_ID == null)
-            throw new MandatoryFieldOmittedException("The file ID is a mandatory field.", json);
+            throw new MandatoryFieldOmittedException("The file ID is a mandatory field", json);
     }
     
 }

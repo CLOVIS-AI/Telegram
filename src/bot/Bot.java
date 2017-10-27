@@ -15,8 +15,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.HttpURLConnection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import minimaljson.Json;
 import minimaljson.JsonArray;
 import minimaljson.JsonObject;
@@ -186,7 +184,7 @@ public abstract class Bot{
         } catch (FileNotFoundException ex){
             System.err.println("The command " + method + " does not exist.");
         } catch (IOException ex) {
-            System.err.println("ERROR WHILE SENDING MESSAGE");
+            System.err.println("ERROR WHILE SENDING MESSAGE : " + ex.getMessage());
         }
         return null;
     }

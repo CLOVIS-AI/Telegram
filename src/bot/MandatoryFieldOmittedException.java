@@ -28,6 +28,6 @@ public class MandatoryFieldOmittedException extends RuntimeException {
      * @param json the json object that caused it.
      */
     public MandatoryFieldOmittedException(String msg, JsonValue json) {
-        super(msg + "\n" + json.asString());
+        super(msg + "\n" + json.toString());
     }
 }

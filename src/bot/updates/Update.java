@@ -14,14 +14,19 @@ import minimaljson.JsonObject;
 public abstract class Update {
     
     /** ID of this update. */
-    public final int ID;
+    public final int UPDATE_ID;
     
     /**
      * Creates an update.
      * @param json JSON update from the Telegram servers.
      */
     public Update(JsonObject json){
-        ID = json.getInt("update_id", 0);
+        UPDATE_ID = json.getInt("update_id", 0);
+    }
+    
+    @Override
+    public String toString(){
+        return "This is an update.";
     }
     
     public static Update newUpdate(JsonObject json){

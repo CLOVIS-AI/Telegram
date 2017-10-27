@@ -8,8 +8,6 @@ package bot.messages;
 import bot.Chat;
 import bot.MandatoryFieldOmittedException;
 import bot.User;
-import bot.updates.Update;
-import minimaljson.JsonArray;
 import minimaljson.JsonObject;
 
 /**
@@ -88,6 +86,8 @@ public abstract class Message{
         else if(json.getInt("duration", -1) != -1){ return new AudioMessage(json); }
         else if(json.get("new_chat_members") != null){ return new NewMembers(json); }
         else if(json.get("left_chat_member") != null){ return new LeftMember(json); }
+        else if(json.get("photo") != null){ return new PhotoMessage(json); }
+        else if(json.get("sticker") != null){ return new StickerMessage(json); }
         else{
             throw new UnsupportedOperationException("This type of message is not supported : " + json.toString());
         }
