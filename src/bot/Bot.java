@@ -122,9 +122,11 @@ public abstract class Bot{
     /**
      * Connects to the Telegram server to get new updates, then calls
      * {@link #onUpdate(bot.updates.Update) onUpdate()} on every update.
+     * @param longPolling if no updates are available, how long should the
+     * Telegram servers take to end the connection (seconds) ?
      */
-    public synchronized final void update(){
-        JsonValue request = http("getUpdates?offset=" + maxUpdateID + "&timeout="+60).asObject().get("result");
+    public synchronized final void update(int longPolling){
+        JsonValue request = http("getUpdates?offset=" + maxUpdateID + "&timeout="+longPolling).asObject().get("result");
         JsonArray updates = request.asArray();
         for(JsonValue value : updates){
             Update u = Update.newUpdate((JsonObject) value);
@@ -149,13 +151,7 @@ public abstract class Bot{
         while(Thread.currentThread().isAlive()){
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             System.out.println(dateFormat.format(new Date()) + "\tAuto-updating bot ...");
-            update();
-            //System.exit(0);
-            try {
-                Thread.sleep(updateTimeout);
-            } catch (InterruptedException ex) {
-                System.err.println(ex.toString());
-            }
+            update((int) updateTimeout);
         }
         autoUpdateActivated = false;
     }
