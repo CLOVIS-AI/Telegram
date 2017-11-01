@@ -31,12 +31,25 @@ public abstract class Message{
     /**
      * Informations about who forwarded this message. It can hold either :
      * <ul>
-     * <li><code>null</code> - if this message was not forwarded,</li>
+     * <li><code>null</code> - if this message was not forwarded (you can also
+     * use {@link #isForwarded() isForwarded()} to know if this message was
+     * forwarded),</li>
      * <li>A {@link ForwardDataUser} object - if this message was forwarded from a group : data about the original user,</li>
      * <li>A {@link ForwardDataChannel} object - if this message was forwarded from a channel : data about the channel.</li>
      * </ul>
      */
     public final ForwardData FORWARD;
+    
+    /**
+     * Is this message forwarded from somewhere else ?<br><br>
+     * 
+     * If this method returns <code>true</code>, it is safe to use the
+     * {@link #FORWARD} variable without fearing {@link NullPointerException}.
+     * @return <code>true</code> if it was forwarded.
+     */
+    public final boolean isForwarded(){
+        return FORWARD != null;
+    }
     
     /** (Optional : replies)<br> The original message. 
      * It will not contain further <code>reply_to_message</code> fields even if it
