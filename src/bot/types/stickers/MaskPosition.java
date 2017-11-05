@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package types.stickers;
+package bot.types.stickers;
 
 import bot.MandatoryFieldOmittedException;
 import minimaljson.JsonObject;

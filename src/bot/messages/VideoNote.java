@@ -7,7 +7,7 @@ package bot.messages;
 
 import bot.MandatoryFieldOmittedException;
 import minimaljson.JsonObject;
-import types.others.PhotoSize;
+import bot.types.others.PhotoSize;
 
 /**
  * This object represents a video message.

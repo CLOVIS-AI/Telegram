@@ -108,8 +108,6 @@ public class Message{
     public static final Message newMessage(JsonObject json) throws MandatoryFieldOmittedException{
         if(json.getString("text", null) != null){ return new TextMessage(json); }
         else if(json.getInt("duration", -1) != -1){ return new AudioMessage(json); }
-        else if(json.get("new_chat_members") != null){ return new NewMembers(json); }
-        else if(json.get("left_chat_member") != null){ return new LeftMember(json); }
         else if(json.get("photo") != null){ return new PhotoMessage(json); }
         else if(json.get("sticker") != null){ return new StickerMessage(json); }
         else if(json.get("document") != null){ return new DocumentMessage(json); }

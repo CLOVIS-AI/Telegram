@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bot.messages;
+package bot.updates;
 
 import bot.User;
+import bot.messages.Message;
 import minimaljson.JsonObject;
 
 /**
  *
- * @author ubuntu
+ * @author CLOVIS
  */
-class LeftMember extends Message {
+class LeftMember extends Update {
 
     /** User who left the chat. May be the bot itself. */
     public final User USER;
