@@ -11,10 +11,7 @@ import minimaljson.JsonObject;
  *
  * @author CLOVIS
  */
-public class User {
-    
-    /** Unique identifier of this user. */
-    public final long ID;
+public class User extends Chat {
     
     /** Is this user a bot ? */
     public final boolean IS_BOT;
@@ -24,9 +21,6 @@ public class User {
     
     /** (Optional)<br>Last name of the user. */
     public final String LAST_NAME;
-    
-    /** (Optional)<br>The user's username. */
-    public final String USERNAME;
     
     /** (Optional)<br><a href="https://en.wikipedia.org/wiki/IETF_language_tag">
      * IETF language tag</a> of the user's language. */
@@ -38,16 +32,27 @@ public class User {
      * @throws MandatoryFieldOmittedException if the ID or first name are omitted.
      */
     public User(JsonObject json) throws MandatoryFieldOmittedException{
-        ID =         json.getLong("id", 0);
+        super(json);
         IS_BOT =     json.getBoolean("is_bot", false);
         FIRST_NAME = json.getString("first_name", null);
         LAST_NAME =  json.getString("last_name", null);
-        USERNAME =   json.getString("username", null);
         LANGUAGE =   json.getString("language_code", null);
         
         if(ID == 0 || FIRST_NAME == null){
             throw new MandatoryFieldOmittedException("Either the ID or the first name was omitted.", json);
         }
+    }
+    
+    /**
+     * Creates an empty User object. <b>DO NOT USE OUTSIDE OF THE SEND... METHODS !</b>
+     * @param ID 
+     */
+    public User(long ID){
+        super(ID);
+        IS_BOT = false;
+        FIRST_NAME = null;
+        LAST_NAME = null;
+        LANGUAGE = null;
     }
     
     @Override

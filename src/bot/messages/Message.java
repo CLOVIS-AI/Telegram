@@ -68,7 +68,7 @@ public class Message{
         FROM = new User(json.get("from").asObject());
         AUTHOR_SIGNATURE = json.getString("author_signature", null);
         DATE = json.getInt("date", 0);
-        CHAT = new Chat(json.get("chat").asObject());
+        CHAT = Chat.newChat(json.get("chat").asObject());
         
         if(json.get("forward_from") != null)
             FORWARD = new ForwardDataUser(json);
@@ -164,7 +164,7 @@ public class Message{
             
             JsonValue ja = json.get("forward_from_channel");
             if(ja != null)
-                CHANNEL = new Chat(ja.asObject());
+                CHANNEL = Chat.newChat(ja.asObject());
             else
                 CHANNEL = null;
             

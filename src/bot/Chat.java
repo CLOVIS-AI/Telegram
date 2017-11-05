@@ -22,10 +22,6 @@ public class Chat {
     public final String TITLE;
     /** (Optional : private, supergroup, channel)<br> Group username. */
     public final String USERNAME;
-    /** (Optional : private chat)<br> First name of the user in a private chat. */
-    public final String FIRST_NAME;
-    /** (Optional : private chat and user's choice)<br> Last name of the user in a private chat. */
-    public final String LAST_NAME;
     /** (Optional)<br> True if a group has "All members are admins" enabled. */
     public final boolean ALL_MEMBERS_ADMIN;
     // @TODO : PHOTO
@@ -39,14 +35,13 @@ public class Chat {
      * Creates a Chat object.
      * @param json data from the Telegram servers
      * @throws MandatoryFieldOmittedException If the field ID is omitted
+     * @deprecated
      */
     public Chat(JsonObject json) throws MandatoryFieldOmittedException{
         ID =                json.getLong("id", 0);
         TYPE =              Type.fromString(json.getString("type", null));
         TITLE =             json.getString("title", null);
         USERNAME =          json.getString("username", null);
-        FIRST_NAME =        json.getString("first_name", null);
-        LAST_NAME =         json.getString("last_name", null);
         ALL_MEMBERS_ADMIN = json.getBoolean("all_members_are_administrators", false);
         DESCRIPTION =       json.getString("description", null);
         INVITE_LINK =       json.getString("invite_link", null);
@@ -54,6 +49,19 @@ public class Chat {
         if(ID == 0){
             throw new MandatoryFieldOmittedException("Field ID is mandatory.", json);
         }
+    }
+    
+    /**
+     * Creates a Chat object.
+     * @param json data from the Telegram servers
+     * @return The created Chat. Might be a User.
+     * @throws MandatoryFieldOmittedException If the field ID is omitted
+     */
+    public static Chat newChat(JsonObject json) throws MandatoryFieldOmittedException{
+        if(json.getString("type", null).equals("private"))
+            return new User(json);
+        else
+            return new Chat(json);
     }
     
     /**
@@ -66,8 +74,6 @@ public class Chat {
         TYPE = null;
         TITLE = null;
         USERNAME = null;
-        FIRST_NAME = null;
-        LAST_NAME = null;
         ALL_MEMBERS_ADMIN = false;
         DESCRIPTION = null;
         INVITE_LINK = null;
@@ -75,7 +81,20 @@ public class Chat {
     
     @Override
     public String toString(){
-        return (TITLE == null ? "No_Title" : TITLE) + " (" + (USERNAME == null ? ID : "@" + USERNAME) + ")";
+        return (TITLE == null ? "" : TITLE + " (") + (USERNAME == null ? ID : "@" + USERNAME) + (TITLE != null ? ")" : "");
+    }
+    
+    /**
+     * Casts this chat as a user, to get the user's informations.
+     * @return This chat as a user object.
+     * @throws IllegalStateException this method should only be called if this chat is a private chat.
+     *         You can know if this is the case by checking {@link #TYPE} and {@link Type#PRIVATE}.
+     */
+    public User asUser(){
+        if(TYPE == Type.PRIVATE)
+            return (User) this;
+        else
+            throw new IllegalStateException("The method asUser should only be called when Chat.TYPE == Type.PRIVATE. Here, Chat.TYPE == " + TYPE.toString());
     }
     
     /**
