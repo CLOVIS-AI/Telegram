@@ -58,6 +58,7 @@ public class Chat {
     
     /**
      * Creates an empty Chat object, to be used to make a request (ex. to hardcode the destination).
+     * <b>DO NOT USE ANYWHERE EXCEPT THE SEND... METHODS !</b>
      * @param ID unique identifier of this Chat
      */
     public Chat(long ID){
