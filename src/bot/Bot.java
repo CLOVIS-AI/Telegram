@@ -267,6 +267,26 @@ public abstract class Bot{
             maxUpdateID = max(u.UPDATE_ID, maxUpdateID)+1;
         }
     }
+    /**
+     * Call to get automatical updates. This method will never end, as long as
+     * the thread calling it is alive.<br>
+     * To get updates without blocking the code flow, use {@link #update() }.
+     * @exception IllegalThreadStateException if called twice at the same time
+     */
+    @SuppressWarnings("SleepWhileInLoop")
+    public final void autoUpdate() throws IllegalThreadStateException {
+        if(autoUpdateActivated){
+            throw new IllegalThreadStateException("This method cannot be called by two threads.");
+        }
+        autoUpdateActivated = true;
+        
+        while(Thread.currentThread().isAlive()){
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            System.out.println(dateFormat.format(new Date()) + "\tAuto-updating bot ...");
+            update((int) updateTimeout);
+        }
+        autoUpdateActivated = false;
+    }
     
     // ******************************** METHODS ********************************
     
@@ -329,27 +349,6 @@ public abstract class Bot{
     }
     
     /**
-     * Call to get automatical updates. This method will never end, as long as
-     * the thread calling it is alive.<br>
-     * To get updates without blocking the code flow, use {@link #update() }.
-     * @exception IllegalThreadStateException if called twice at the same time
-     */
-    @SuppressWarnings("SleepWhileInLoop")
-    public final void autoUpdate() throws IllegalThreadStateException {
-        if(autoUpdateActivated){
-            throw new IllegalThreadStateException("This method cannot be called by two threads.");
-        }
-        autoUpdateActivated = true;
-        
-        while(Thread.currentThread().isAlive()){
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-            System.out.println(dateFormat.format(new Date()) + "\tAuto-updating bot ...");
-            update((int) updateTimeout);
-        }
-        autoUpdateActivated = false;
-    }
-    
-    /**
      * Sends a HTTP request to the Telegram Bot API.<br/><br/>
      * This method is greatly inspired from 
      * <a href="https://stackoverflow.com/questions/4205980/java-sending-http-parameters-via-post-method-easily">Stack Overflow</a>.
@@ -409,11 +408,21 @@ public abstract class Bot{
         /**
          * <a href="https://core.telegram.org/bots/api#formatting-options">Formatting options.</a>
          */
-        MARKDOWN,
+        MARKDOWN{
+            @Override
+            public String toString(){
+                return "Markdown";
+            }
+        },
         
         /**
          * <a href="https://core.telegram.org/bots/api#formatting-options">Formatting options.</a>
          */
-        HTML
+        HTML{
+            @Override
+            public String toString(){
+                return "HTML";
+            }
+        }
     }
 }
