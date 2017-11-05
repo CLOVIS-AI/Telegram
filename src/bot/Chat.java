@@ -35,6 +35,11 @@ public class Chat {
     public final String INVITE_LINK;
     // @TODO : pinned message
     
+    /**
+     * Creates a Chat object.
+     * @param json data from the Telegram servers
+     * @throws MandatoryFieldOmittedException If the field ID is omitted
+     */
     public Chat(JsonObject json) throws MandatoryFieldOmittedException{
         ID =                json.getLong("id", 0);
         TYPE =              Type.fromString(json.getString("type", null));
@@ -49,6 +54,22 @@ public class Chat {
         if(ID == 0){
             throw new MandatoryFieldOmittedException("Field ID is mandatory.", json);
         }
+    }
+    
+    /**
+     * Creates an empty Chat object, to be used to make a request (ex. to hardcode the destination).
+     * @param ID unique identifier of this Chat
+     */
+    public Chat(long ID){
+        this.ID = ID;
+        TYPE = null;
+        TITLE = null;
+        USERNAME = null;
+        FIRST_NAME = null;
+        LAST_NAME = null;
+        ALL_MEMBERS_ADMIN = false;
+        DESCRIPTION = null;
+        INVITE_LINK = null;
     }
     
     @Override
