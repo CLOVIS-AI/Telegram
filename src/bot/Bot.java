@@ -398,4 +398,22 @@ public abstract class Bot{
     private JsonValue http(String method){
         return http(method, Json.parse("{\"status\":null}").asObject());
     }
+    
+    /**
+     * If you want Telegram to show bold, italic, fixed-width texts or URLs.<br>
+     * The syntax depends on your choice ; see them below.
+     * @see #MARKDOWN
+     * @see #HTML
+     */
+    public static enum ParseMode{
+        /**
+         * <a href="https://core.telegram.org/bots/api#formatting-options">Formatting options.</a>
+         */
+        MARKDOWN,
+        
+        /**
+         * <a href="https://core.telegram.org/bots/api#formatting-options">Formatting options.</a>
+         */
+        HTML
+    }
 }

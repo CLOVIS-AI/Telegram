@@ -59,4 +59,31 @@ public class User extends Chat {
     public String toString(){
         return (USERNAME == null ? FIRST_NAME : "@" + USERNAME) + " (" + ID + ")";
     }
+    
+    /**
+     * Gets a link usable in {@link Bot#send(bot.messages.TextMessage, bot.Chat) send}
+     * that links to this user, using the appropriate markdown style.
+     * @param display what does the link display
+     * @param markdown the markdown style you specified in {@link Bot#send(bot.messages.TextMessage, bot.Chat) send}
+     * @return A usable link.
+     */
+    public String toMention(String display, Bot.ParseMode markdown){
+        if(markdown == Bot.ParseMode.MARKDOWN)
+            return "[" + display + "](tg://user?id=" + ID + ")";
+        else if(markdown == Bot.ParseMode.HTML)
+            return "<a href=\"tg://user?id=" + ID + "\">" + display + "</a>";
+        else
+            throw new IllegalArgumentException("The argument 'markdown' should be either MARKDOWN or HTML ; found : " + markdown);
+    }
+    
+    /**
+     * Gets a link usable in {@link Bot#send(bot.messages.TextMessage, bot.Chat) send}
+     * that links to this user, using the appropriate markdown style.<br>
+     * The text of the link will be the first name of the user.
+     * @param markdown the markdown style you specified in {@link Bot#send(bot.messages.TextMessage, bot.Chat) send}
+     * @return A usable link.
+     */
+    public String toMention(Bot.ParseMode markdown){
+        return toMention(FIRST_NAME, markdown);
+    }
 }
