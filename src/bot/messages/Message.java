@@ -15,7 +15,7 @@ import minimaljson.JsonValue;
  *
  * @author CLOVIS
  */
-public abstract class Message{
+public class Message{
     
     /** Unique message identifier inside this chat. */
     public final long ID;
@@ -85,6 +85,21 @@ public abstract class Message{
         LAST_EDIT = json.getInt("edit_date", 0);
     }
     
+    /**
+     * Creates an empty Message object. <b>DO NOT USE ANYWHERE EXCEPT THE SEND... METHODS !</b>
+     * @param ID 
+     */
+    public Message(long ID){
+        this.ID = ID;
+        FROM = null;
+        AUTHOR_SIGNATURE = null;
+        DATE = 0;
+        CHAT = null;
+        FORWARD = null;
+        REPLY_TO_MESSAGE = null;
+        LAST_EDIT = 0;
+    }
+    
     @Override
     public String toString(){
         return CHAT.toString() + " > " + (FROM != null ? FROM.toString() : (AUTHOR_SIGNATURE == null ? "" : AUTHOR_SIGNATURE));
@@ -120,7 +135,7 @@ public abstract class Message{
     /**
      * Data of the forward from a user.
      */
-    public class ForwardDataUser extends ForwardData {
+    public final class ForwardDataUser extends ForwardData {
         /** Sender of the original message. */
         public final User USER;
 
@@ -137,7 +152,7 @@ public abstract class Message{
     /**
      * Data of the forward from a channel.
      */
-    public class ForwardDataChannel extends ForwardData {
+    public final class ForwardDataChannel extends ForwardData {
         /** Information about the channel. */
         public final Chat CHANNEL;
         /** Identifier of the orginal message. */
