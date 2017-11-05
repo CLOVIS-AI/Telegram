@@ -13,7 +13,7 @@ import bot.types.others.PhotoSize;
  * This object represents a video message.
  * @author CLOVIS
  */
-public class VideoNote extends FileMessage {
+public class VideoNoteMessage extends FileMessage {
 
     /** (Optional)<br>Video thumbnail. */
     public final PhotoSize THUMBNAIL;
@@ -30,7 +30,7 @@ public class VideoNote extends FileMessage {
      * @param json data from the Telegram servers
      * @throws MandatoryFieldOmittedException if any mandatory field is omitted
      */
-    public VideoNote(JsonObject json) throws MandatoryFieldOmittedException {
+    public VideoNoteMessage(JsonObject json) throws MandatoryFieldOmittedException {
         super(json, json.get("video_note").asObject());
         
         JsonObject ja = json.get("video_note").asObject();

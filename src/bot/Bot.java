@@ -12,7 +12,7 @@ import bot.messages.PhotoMessage;
 import bot.messages.StickerMessage;
 import bot.messages.TextMessage;
 import bot.messages.VideoMessage;
-import bot.messages.VideoNote;
+import bot.messages.VideoNoteMessage;
 import bot.messages.VoiceMessage;
 import bot.updates.ChannelPostUpdate;
 import bot.updates.EditedChannelPostUpdate;
@@ -147,7 +147,7 @@ public abstract class Bot{
     public void onNewMessage(DocumentMessage message)   {onNewMessage((Message)message);}
     public void onNewMessage(VoiceMessage message)      {onNewMessage((Message)message);}
     public void onNewMessage(VideoMessage message)      {onNewMessage((Message)message);}
-    public void onNewMessage(VideoNote message)         {onNewMessage((Message)message);}
+    public void onNewMessage(VideoNoteMessage message)         {onNewMessage((Message)message);}
     
     /**
      * This method is called when a message is edited in a group where the bot is.
@@ -161,7 +161,7 @@ public abstract class Bot{
     public void onEditedMessage(DocumentMessage message)   {onEditedMessage((Message)message);}
     public void onEditedMessage(VoiceMessage message)      {onEditedMessage((Message)message);}
     public void onEditedMessage(VideoMessage message)      {onEditedMessage((Message)message);}
-    public void onEditedMessage(VideoNote message)         {onEditedMessage((Message)message);}
+    public void onEditedMessage(VideoNoteMessage message)         {onEditedMessage((Message)message);}
     
     /**
      * This method is called when a message is sent in a channel where the bot is.
@@ -175,7 +175,7 @@ public abstract class Bot{
     public void onNewPost(DocumentMessage message)   {onNewPost((Message)message);}
     public void onNewPost(VoiceMessage message)      {onNewPost((Message)message);}
     public void onNewPost(VideoMessage message)      {onNewPost((Message)message);}
-    public void onNewPost(VideoNote message)         {onNewPost((Message)message);}
+    public void onNewPost(VideoNoteMessage message)         {onNewPost((Message)message);}
     
     /**
      * This method is called when a message is edited in a channel where the bot is.
@@ -189,7 +189,7 @@ public abstract class Bot{
     public void onEditedPost(DocumentMessage message)   {onEditedPost((Message)message);}
     public void onEditedPost(VoiceMessage message)      {onEditedPost((Message)message);}
     public void onEditedPost(VideoMessage message)      {onEditedPost((Message)message);}
-    public void onEditedPost(VideoNote message)         {onEditedPost((Message)message);}
+    public void onEditedPost(VideoNoteMessage message)         {onEditedPost((Message)message);}
     
     /**
      * This method is called when new users join a chat where the bot is
@@ -225,7 +225,7 @@ public abstract class Bot{
                 else if(m instanceof DocumentMessage)onNewMessage((DocumentMessage)m);
                 else if(m instanceof VoiceMessage)  onNewMessage((VoiceMessage)m);
                 else if(m instanceof VideoMessage)  onNewMessage((VideoMessage)m);
-                else if(m instanceof VideoNote)     onNewMessage((VideoNote)m);
+                else if(m instanceof VideoNoteMessage)     onNewMessage((VideoNoteMessage)m);
             }else if(u instanceof EditedMessageUpdate){
                 Message m = ((EditedMessageUpdate)u).MESSAGE;
                 if(m instanceof TextMessage)        onEditedMessage((TextMessage)m);
@@ -235,7 +235,7 @@ public abstract class Bot{
                 else if(m instanceof DocumentMessage)onEditedMessage((DocumentMessage)m);
                 else if(m instanceof VoiceMessage)  onEditedMessage((VoiceMessage)m);
                 else if(m instanceof VideoMessage)  onEditedMessage((VideoMessage)m);
-                else if(m instanceof VideoNote)     onEditedMessage((VideoNote)m);
+                else if(m instanceof VideoNoteMessage)     onEditedMessage((VideoNoteMessage)m);
             }else if(u instanceof ChannelPostUpdate){
                 Message m = ((ChannelPostUpdate)u).MESSAGE;
                 if(m instanceof TextMessage)        onNewPost((TextMessage)m);
@@ -245,7 +245,7 @@ public abstract class Bot{
                 else if(m instanceof DocumentMessage)onNewPost((DocumentMessage)m);
                 else if(m instanceof VoiceMessage)  onNewPost((VoiceMessage)m);
                 else if(m instanceof VideoMessage)  onNewPost((VideoMessage)m);
-                else if(m instanceof VideoNote)     onNewPost((VideoNote)m);
+                else if(m instanceof VideoNoteMessage)     onNewPost((VideoNoteMessage)m);
             }else if(u instanceof EditedChannelPostUpdate){
                 Message m = ((EditedChannelPostUpdate)u).MESSAGE;
                 if(m instanceof TextMessage)        onEditedPost((TextMessage)m);
@@ -255,7 +255,7 @@ public abstract class Bot{
                 else if(m instanceof DocumentMessage)onEditedPost((DocumentMessage)m);
                 else if(m instanceof VoiceMessage)  onEditedPost((VoiceMessage)m);
                 else if(m instanceof VideoMessage)  onEditedPost((VideoMessage)m);
-                else if(m instanceof VideoNote)     onEditedPost((VideoNote)m);
+                else if(m instanceof VideoNoteMessage)     onEditedPost((VideoNoteMessage)m);
             }else if(u instanceof NewMembers){
                 onMembersJoining(((NewMembers)u).USERS);
             }else if(u instanceof LeftMember){

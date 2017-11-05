@@ -113,7 +113,7 @@ public class Message{
         else if(json.get("document") != null){ return new DocumentMessage(json); }
         else if(json.get("voice") != null){ return new VoiceMessage(json); }
         else if(json.get("video") != null){ return new VideoMessage(json); }
-        else if(json.get("video_note") != null){ return new VideoNote(json); }
+        else if(json.get("video_note") != null){ return new VideoNoteMessage(json); }
         else{
             throw new UnsupportedOperationException("This type of message is not supported : " + json.toString());
         }
