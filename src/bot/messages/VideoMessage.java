@@ -28,9 +28,9 @@ public class VideoMessage extends FileMessage {
     public final PhotoSize THUMBNAIL;
     
     /**
-     * 
-     * @param json
-     * @throws MandatoryFieldOmittedException 
+     * Creates a VideoMessage.
+     * @param json data from the Telegram servers.
+     * @throws MandatoryFieldOmittedException if any mandatory field is omitted
      */
     public VideoMessage(JsonObject json) throws MandatoryFieldOmittedException {
         super(json, json.get("video").asObject());
