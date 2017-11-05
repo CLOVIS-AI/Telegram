@@ -270,18 +270,62 @@ public abstract class Bot{
     
     // ******************************** METHODS ********************************
     
+    /**
+     * Forwards a message and notifies the users in the group.<br><br>
+     * Same as calling {@link #forward(bot.messages.Message, bot.Chat, boolean) forward}<code>(message, destination, true)</code>.
+     * @param message which message the bot should forward
+     * @param destination where the message should be forwarded to
+     * @return The message.
+     */
+    public final Message forward(Message message, Chat destination){
+        return forward(message, destination, true);
+    }
+    
+    /**
+     * Forwards a message.
+     * @param message which message the bot should forward
+     * @param destination where the message should be forwarded to
+     * @param notification do you want to notify the user ? If <code>false</code>,
+     *                     the user will receive a notification with no sound.
+     *                     Otherwise, this method is the same as {@link #forward(bot.messages.Message, bot.Chat) }
+     * @return The sent message.
+     */
+    public final Message forward(Message message, Chat destination, boolean notification){
+        System.out.println("Fwd " + message.toString() + " [to " + destination.toString() + "]");
+        return forward(destination.ID,
+                       message.CHAT.ID,
+                       message.ID, notification);
+    }
+    
+    /**
+     * Forwards a message.
+     * @param destination destination of the forward
+     * @param source source of the forward
+     * @param message the message
+     * @deprecated 
+     * @return The sent message.
+     */
     public final Message forward(Chat destination, Chat source, Message message){
         return forward(destination.ID,
                        source.ID,
-                       message.ID);
+                       message.ID, true);
     }
     
-    public final Message forward(long destinationID, long sourceID, long messageID){
+    /**
+     * Forwards a message
+     * @param destinationID the destination
+     * @param sourceID the source of the message
+     * @param messageID the message
+     * @param notification should the user be notified ?
+     * @return On success, the sent message.
+     */
+    private Message forward(long destinationID, long sourceID, long messageID, boolean notification){
         JsonObject j = new JsonObject();
         j.add("chat_id", destinationID);
         j.add("from_chat_id", sourceID);
         j.add("message_id", messageID);
-        return Message.newMessage((JsonObject)http("forwardMessage", j));
+        j.add("disable_notification", !notification);
+        return Message.newMessage(((JsonObject)http("forwardMessage", j)).get("result").asObject());
     }
     
     /**
