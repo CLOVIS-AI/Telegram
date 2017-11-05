@@ -6,14 +6,13 @@
 package bot.updates;
 
 import bot.User;
-import bot.messages.Message;
 import minimaljson.JsonObject;
 
 /**
  *
  * @author CLOVIS
  */
-class LeftMember extends Update {
+public class LeftMember extends Update {
 
     /** User who left the chat. May be the bot itself. */
     public final User USER;
