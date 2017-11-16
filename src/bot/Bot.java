@@ -14,6 +14,7 @@ import bot.messages.TextMessage;
 import bot.messages.VideoMessage;
 import bot.messages.VideoNoteMessage;
 import bot.messages.VoiceMessage;
+import bot.send.SendableText;
 import bot.updates.ChannelPostUpdate;
 import bot.updates.EditedChannelPostUpdate;
 import bot.updates.EditedMessageUpdate;
@@ -38,6 +39,7 @@ import minimaljson.Json;
 import minimaljson.JsonArray;
 import minimaljson.JsonObject;
 import minimaljson.JsonValue;
+import minimaljson.WriterConfig;
 
 /**
  * Class that defines a bot.<br><br>
@@ -348,6 +350,12 @@ public abstract class Bot{
         return Message.newMessage(((JsonObject)http("forwardMessage", j)).get("result").asObject());
     }
     
+    public Message send(SendableText message, Chat chat){
+        JsonObject j = message.toJson();
+        j.add("chat_id", chat.ID);
+        return Message.newMessage(((JsonObject)http(message.methodName(), j)).get("result").asObject());
+    }
+    
     /**
      * Sends a HTTP request to the Telegram Bot API.<br/><br/>
      * This method is greatly inspired from 
@@ -383,7 +391,7 @@ public abstract class Bot{
         } catch (FileNotFoundException ex){
             System.err.println("The command " + method + " does not exist : " + ex.getMessage());
         } catch (IOException ex) {
-            System.err.println("ERROR WHILE SENDING MESSAGE : " + ex.getMessage());
+            System.err.println("ERROR WHILE SENDING MESSAGE : " + ex.getMessage() + " WITH OPTIONS : \n" + parameters.toString(WriterConfig.PRETTY_PRINT));
         }
         return null;
     }

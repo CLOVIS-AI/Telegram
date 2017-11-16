@@ -8,7 +8,7 @@ package bot.replymarkup;
 import minimaljson.JsonValue;
 
 /**
- *
+ * This object can be used to specify buttons to the reply.
  * @author CLOVIS
  */
 public interface ReplyMarkup {
