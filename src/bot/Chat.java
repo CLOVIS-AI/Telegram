@@ -123,6 +123,7 @@ public class Chat {
          * @return The corresponding Type instance.
          */
         public static Type fromString(String type){
+            if(type == null)    return null;
             switch(type){
                 case "private":     return PRIVATE;
                 case "group":       return GROUP;
