@@ -116,6 +116,8 @@ public abstract class Bot{
         
         System.out.println("Hello, I am " + NAME + ".\n    Username : @"
                 + USERNAME + "\n    ID : " + ID);
+        
+        setup();
     }
     
     /**
@@ -149,56 +151,56 @@ public abstract class Bot{
      * @param message the message that was sent
      */
     public void onNewMessage(Message message){}
-    public void onNewMessage(TextMessage message)       {onNewMessage((Message)message);}
-    public void onNewMessage(AudioMessage message)      {onNewMessage((Message)message);}
-    public void onNewMessage(PhotoMessage message)      {onNewMessage((Message)message);}
-    public void onNewMessage(StickerMessage message)    {onNewMessage((Message)message);}
-    public void onNewMessage(DocumentMessage message)   {onNewMessage((Message)message);}
-    public void onNewMessage(VoiceMessage message)      {onNewMessage((Message)message);}
-    public void onNewMessage(VideoMessage message)      {onNewMessage((Message)message);}
-    public void onNewMessage(VideoNoteMessage message)         {onNewMessage((Message)message);}
+    public void onNewMessage(TextMessage message)       {}
+    public void onNewMessage(AudioMessage message)      {}
+    public void onNewMessage(PhotoMessage message)      {}
+    public void onNewMessage(StickerMessage message)    {}
+    public void onNewMessage(DocumentMessage message)   {}
+    public void onNewMessage(VoiceMessage message)      {}
+    public void onNewMessage(VideoMessage message)      {}
+    public void onNewMessage(VideoNoteMessage message)  {}
     
     /**
      * This method is called when a message is edited in a group where the bot is.
      * @param message the message that was edited
      */
-    public void onEditedMessage(Message message){System.out.println("raté");}
-    public void onEditedMessage(TextMessage message)       {onEditedMessage((Message)message);}
-    public void onEditedMessage(AudioMessage message)      {onEditedMessage((Message)message);}
-    public void onEditedMessage(PhotoMessage message)      {onEditedMessage((Message)message);}
-    public void onEditedMessage(StickerMessage message)    {onEditedMessage((Message)message);}
-    public void onEditedMessage(DocumentMessage message)   {onEditedMessage((Message)message);}
-    public void onEditedMessage(VoiceMessage message)      {onEditedMessage((Message)message);}
-    public void onEditedMessage(VideoMessage message)      {onEditedMessage((Message)message);}
-    public void onEditedMessage(VideoNoteMessage message)         {onEditedMessage((Message)message);}
+    public void onEditedMessage(Message message){}
+    public void onEditedMessage(TextMessage message)       {}
+    public void onEditedMessage(AudioMessage message)      {}
+    public void onEditedMessage(PhotoMessage message)      {}
+    public void onEditedMessage(StickerMessage message)    {}
+    public void onEditedMessage(DocumentMessage message)   {}
+    public void onEditedMessage(VoiceMessage message)      {}
+    public void onEditedMessage(VideoMessage message)      {}
+    public void onEditedMessage(VideoNoteMessage message)  {}
     
     /**
      * This method is called when a message is sent in a channel where the bot is.
      * @param message the message that was sent
      */
     public void onNewPost(Message message){}
-    public void onNewPost(TextMessage message)       {onNewPost((Message)message);}
-    public void onNewPost(AudioMessage message)      {onNewPost((Message)message);}
-    public void onNewPost(PhotoMessage message)      {onNewPost((Message)message);}
-    public void onNewPost(StickerMessage message)    {onNewPost((Message)message);}
-    public void onNewPost(DocumentMessage message)   {onNewPost((Message)message);}
-    public void onNewPost(VoiceMessage message)      {onNewPost((Message)message);}
-    public void onNewPost(VideoMessage message)      {onNewPost((Message)message);}
-    public void onNewPost(VideoNoteMessage message)         {onNewPost((Message)message);}
+    public void onNewPost(TextMessage message)       {}
+    public void onNewPost(AudioMessage message)      {}
+    public void onNewPost(PhotoMessage message)      {}
+    public void onNewPost(StickerMessage message)    {}
+    public void onNewPost(DocumentMessage message)   {}
+    public void onNewPost(VoiceMessage message)      {}
+    public void onNewPost(VideoMessage message)      {}
+    public void onNewPost(VideoNoteMessage message)  {}
     
     /**
      * This method is called when a message is edited in a channel where the bot is.
      * @param message the message that was edited
      */
     public void onEditedPost(Message message){}
-    public void onEditedPost(TextMessage message)       {onEditedPost((Message)message);}
-    public void onEditedPost(AudioMessage message)      {onEditedPost((Message)message);}
-    public void onEditedPost(PhotoMessage message)      {onEditedPost((Message)message);}
-    public void onEditedPost(StickerMessage message)    {onEditedPost((Message)message);}
-    public void onEditedPost(DocumentMessage message)   {onEditedPost((Message)message);}
-    public void onEditedPost(VoiceMessage message)      {onEditedPost((Message)message);}
-    public void onEditedPost(VideoMessage message)      {onEditedPost((Message)message);}
-    public void onEditedPost(VideoNoteMessage message)         {onEditedPost((Message)message);}
+    public void onEditedPost(TextMessage message)       {}
+    public void onEditedPost(AudioMessage message)      {}
+    public void onEditedPost(PhotoMessage message)      {}
+    public void onEditedPost(StickerMessage message)    {}
+    public void onEditedPost(DocumentMessage message)   {}
+    public void onEditedPost(VoiceMessage message)      {}
+    public void onEditedPost(VideoMessage message)      {}
+    public void onEditedPost(VideoNoteMessage message)  {}
     
     /**
      * This method is called when new users join a chat where the bot is
@@ -276,44 +278,44 @@ public abstract class Bot{
             Update u = Update.newUpdate((JsonObject) value);
             if(u instanceof MessageUpdate){
                 Message m = ((MessageUpdate)u).MESSAGE;
-                if(m instanceof TextMessage)        onNewMessage((TextMessage)m);
-                else if(m instanceof AudioMessage)  onNewMessage((AudioMessage)m);
-                else if(m instanceof PhotoMessage)  onNewMessage((PhotoMessage)m);
-                else if(m instanceof StickerMessage)onNewMessage((StickerMessage)m);
-                else if(m instanceof DocumentMessage)onNewMessage((DocumentMessage)m);
-                else if(m instanceof VoiceMessage)  onNewMessage((VoiceMessage)m);
-                else if(m instanceof VideoMessage)  onNewMessage((VideoMessage)m);
-                else if(m instanceof VideoNoteMessage)     onNewMessage((VideoNoteMessage)m);
+                if(m instanceof TextMessage){        onNewMessage((TextMessage)m); onNewMessage(m);}
+                else if(m instanceof AudioMessage){  onNewMessage((AudioMessage)m); onNewMessage(m);}
+                else if(m instanceof PhotoMessage){  onNewMessage((PhotoMessage)m); onNewMessage(m);}
+                else if(m instanceof StickerMessage){onNewMessage((StickerMessage)m); onNewMessage(m);}
+                else if(m instanceof DocumentMessage){onNewMessage((DocumentMessage)m); onNewMessage(m);}
+                else if(m instanceof VoiceMessage){  onNewMessage((VoiceMessage)m); onNewMessage(m);}
+                else if(m instanceof VideoMessage){  onNewMessage((VideoMessage)m); onNewMessage(m);}
+                else if(m instanceof VideoNoteMessage){     onNewMessage((VideoNoteMessage)m); onNewMessage(m);}
             }else if(u instanceof EditedMessageUpdate){
                 Message m = ((EditedMessageUpdate)u).MESSAGE;
-                if(m instanceof TextMessage)        onEditedMessage((TextMessage)m);
-                else if(m instanceof AudioMessage)  onEditedMessage((AudioMessage)m);
-                else if(m instanceof PhotoMessage)  onEditedMessage((PhotoMessage)m);
-                else if(m instanceof StickerMessage)onEditedMessage((StickerMessage)m);
-                else if(m instanceof DocumentMessage)onEditedMessage((DocumentMessage)m);
-                else if(m instanceof VoiceMessage)  onEditedMessage((VoiceMessage)m);
-                else if(m instanceof VideoMessage)  onEditedMessage((VideoMessage)m);
-                else if(m instanceof VideoNoteMessage)     onEditedMessage((VideoNoteMessage)m);
+                if(m instanceof TextMessage){        onEditedMessage((TextMessage)m); onEditedMessage(m);}
+                else if(m instanceof AudioMessage){  onEditedMessage((AudioMessage)m); onEditedMessage(m);}
+                else if(m instanceof PhotoMessage){  onEditedMessage((PhotoMessage)m); onEditedMessage(m);}
+                else if(m instanceof StickerMessage){onEditedMessage((StickerMessage)m); onEditedMessage(m);}
+                else if(m instanceof DocumentMessage){onEditedMessage((DocumentMessage)m); onEditedMessage(m);}
+                else if(m instanceof VoiceMessage){  onEditedMessage((VoiceMessage)m); onEditedMessage(m);}
+                else if(m instanceof VideoMessage){  onEditedMessage((VideoMessage)m); onEditedMessage(m);}
+                else if(m instanceof VideoNoteMessage){     onEditedMessage((VideoNoteMessage)m); onEditedMessage(m);}
             }else if(u instanceof ChannelPostUpdate){
                 Message m = ((ChannelPostUpdate)u).MESSAGE;
-                if(m instanceof TextMessage)        onNewPost((TextMessage)m);
-                else if(m instanceof AudioMessage)  onNewPost((AudioMessage)m);
-                else if(m instanceof PhotoMessage)  onNewPost((PhotoMessage)m);
-                else if(m instanceof StickerMessage)onNewPost((StickerMessage)m);
-                else if(m instanceof DocumentMessage)onNewPost((DocumentMessage)m);
-                else if(m instanceof VoiceMessage)  onNewPost((VoiceMessage)m);
-                else if(m instanceof VideoMessage)  onNewPost((VideoMessage)m);
-                else if(m instanceof VideoNoteMessage)     onNewPost((VideoNoteMessage)m);
+                if(m instanceof TextMessage){        onNewPost((TextMessage)m); onNewPost(m);}
+                else if(m instanceof AudioMessage){  onNewPost((AudioMessage)m); onNewPost(m);}
+                else if(m instanceof PhotoMessage){  onNewPost((PhotoMessage)m); onNewPost(m);}
+                else if(m instanceof StickerMessage){onNewPost((StickerMessage)m); onNewPost(m);}
+                else if(m instanceof DocumentMessage){onNewPost((DocumentMessage)m); onNewPost(m);}
+                else if(m instanceof VoiceMessage){  onNewPost((VoiceMessage)m); onNewPost(m);}
+                else if(m instanceof VideoMessage){  onNewPost((VideoMessage)m); onNewPost(m);}
+                else if(m instanceof VideoNoteMessage){     onNewPost((VideoNoteMessage)m); onNewPost(m);}
             }else if(u instanceof EditedChannelPostUpdate){
                 Message m = ((EditedChannelPostUpdate)u).MESSAGE;
-                if(m instanceof TextMessage)        onEditedPost((TextMessage)m);
-                else if(m instanceof AudioMessage)  onEditedPost((AudioMessage)m);
-                else if(m instanceof PhotoMessage)  onEditedPost((PhotoMessage)m);
-                else if(m instanceof StickerMessage)onEditedPost((StickerMessage)m);
-                else if(m instanceof DocumentMessage)onEditedPost((DocumentMessage)m);
-                else if(m instanceof VoiceMessage)  onEditedPost((VoiceMessage)m);
-                else if(m instanceof VideoMessage)  onEditedPost((VideoMessage)m);
-                else if(m instanceof VideoNoteMessage)     onEditedPost((VideoNoteMessage)m);
+                if(m instanceof TextMessage){        onEditedPost((TextMessage)m); onEditedPost(m);}
+                else if(m instanceof AudioMessage){  onEditedPost((AudioMessage)m); onEditedPost(m);}
+                else if(m instanceof PhotoMessage){  onEditedPost((PhotoMessage)m); onEditedPost(m);}
+                else if(m instanceof StickerMessage){onEditedPost((StickerMessage)m); onEditedPost(m);}
+                else if(m instanceof DocumentMessage){onEditedPost((DocumentMessage)m); onEditedPost(m);}
+                else if(m instanceof VoiceMessage){  onEditedPost((VoiceMessage)m); onEditedPost(m);}
+                else if(m instanceof VideoMessage){  onEditedPost((VideoMessage)m); onEditedPost(m);}
+                else if(m instanceof VideoNoteMessage){     onEditedPost((VideoNoteMessage)m); onEditedPost(m);}
             }else if(u instanceof MessageUpdate && ((MessageUpdate)u).MESSAGE instanceof NewMembers){
                 onMembersJoining((NewMembers)((MessageUpdate)u).MESSAGE);
             }else if(u instanceof MessageUpdate && ((MessageUpdate)u).MESSAGE instanceof LeftMember){
@@ -419,13 +421,6 @@ public abstract class Bot{
         return Message.newMessage(((JsonObject)http(message.methodName(), j)).get("result").asObject());
     }
     
-    public Message send(Sendable message, Message reply){
-        JsonObject j = message.toJson();
-        j.add("chat_id", reply.CHAT.ID);
-        j.add("reply_to_message_id", reply.ID);
-        return Message.newMessage(((JsonObject)http(message.methodName(), j)).get("result").asObject());
-    }
-    
     /**
      * Sends a text message.<br><br>
      * To get access to more options, use {@link #send(bot.send.Sendable, bot.Chat) }
@@ -439,15 +434,28 @@ public abstract class Bot{
     }
     
     /**
-     * Sends a text message as a reply.<br><br>
-     * To get access to more options, use {@link #send(bot.send.Sendable, bot.Chat) }
-     * with {@link SendableText}.
-     * @param text text of the message
+     * Replies to a message.
+     * @param message the message you want to send
      * @param replyTo the message you are replying to
      * @return The sent message.
      */
-    public Message send(String text, Message replyTo){
-        return send(new SendableText(text), replyTo);
+    public Message reply(Sendable message, Message replyTo){
+        JsonObject j = message.toJson();
+        j.add("chat_id", replyTo.CHAT.ID);
+        j.add("reply_to_message_id", replyTo.ID);
+        return Message.newMessage(((JsonObject)http(message.methodName(), j)).get("result").asObject());
+    }
+    
+    /**
+     * Replies with a text message.<br><br>
+     * To get access to more options, use {@link #reply(bot.send.Sendable, bot.Chat) }
+     * with {@link SendableText}.
+     * @param text text of the message you want to send
+     * @param replyTo the message you are replying to
+     * @return The sent message.
+     */
+    public Message reply(String text, Message replyTo){
+        return reply(new SendableText(text), replyTo);
     }
     
     /**
