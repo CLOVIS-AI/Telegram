@@ -6,6 +6,7 @@
 package bot.updates;
 
 import minimaljson.JsonObject;
+import minimaljson.WriterConfig;
 
 /**
  * This object represents an incoming update.
@@ -38,7 +39,7 @@ public abstract class Update {
         else if(json.get("left_chat_member") != null)   return new LeftMember(json);
         // TODO
         else{
-            throw new UnsupportedOperationException("This update is either invalid or not yet implemented in the API :\n" + json.toString());
+            throw new UnsupportedOperationException("This update is either invalid or not yet implemented in the API :\n" + json.toString(WriterConfig.PRETTY_PRINT));
         }
     }
 }
