@@ -21,6 +21,7 @@ import bot.updates.EditedMessageUpdate;
 import bot.messages.LeftMember;
 import bot.updates.MessageUpdate;
 import bot.messages.NewMembers;
+import bot.send.Sendable;
 import bot.updates.Update;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -406,10 +407,40 @@ public abstract class Bot{
         return Message.newMessage(((JsonObject)http("forwardMessage", j)).get("result").asObject());
     }
     
-    public Message send(SendableText message, Chat chat){
+    /**
+     * Sends any message.
+     * @param message the message
+     * @param chat the chat where it should be sent
+     * @return The sent message.
+     */
+    public Message send(Sendable message, Chat chat){
         JsonObject j = message.toJson();
         j.add("chat_id", chat.ID);
         return Message.newMessage(((JsonObject)http(message.methodName(), j)).get("result").asObject());
+    }
+    
+    /**
+     * Sends a text message.<br><br>
+     * To get access to more options, use {@link #send(bot.send.Sendable, bot.Chat) }
+     * with {@link SendableText}
+     * @param text text of the message 
+     * @param chat the chat where it should be sent
+     * @return The sent message.
+     */
+    public Message send(String text, Chat chat){
+        return send(new SendableText(text), chat);
+    }
+    
+    /**
+     * Sends a text message as a reply.<br><br>
+     * To get access to more options, use {@link #send(bot.send.Sendable, bot.Chat) }
+     * with {@link SendableText}.
+     * @param text text of the message
+     * @param replyTo the message you are replying to
+     * @return The sent message.
+     */
+    public Message send(String text, Message replyTo){
+        return send(new SendableText(text).reply(replyTo), replyTo.CHAT);
     }
     
     /**
