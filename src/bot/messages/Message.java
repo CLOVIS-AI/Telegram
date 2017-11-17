@@ -53,9 +53,9 @@ public class Message{
     }
     
     /** (Optional : replies)<br> The original message. 
-     * It will not contain further <code>reply_to_message</code> fields even if it
+     * It will not contain further <code>reply</code> fields even if it
      * is itself is a reply. */
-    public final Message REPLY_TO_MESSAGE;
+    public final Message REPLY;
     /** (Optional : edited)<br> The date of the last edit in Unix time. */
     public final int LAST_EDIT;
     
@@ -81,7 +81,7 @@ public class Message{
         Message rpl;
         try{ rpl = newMessage(json.get("reply_to_message").asObject()); }
         catch(NullPointerException e){ rpl = null; }
-        REPLY_TO_MESSAGE = rpl;
+        REPLY = rpl;
         
         LAST_EDIT = json.getInt("edit_date", 0);
     }
@@ -97,7 +97,7 @@ public class Message{
         DATE = 0;
         CHAT = null;
         FORWARD = null;
-        REPLY_TO_MESSAGE = null;
+        REPLY = null;
         LAST_EDIT = 0;
     }
     
