@@ -419,6 +419,13 @@ public abstract class Bot{
         return Message.newMessage(((JsonObject)http(message.methodName(), j)).get("result").asObject());
     }
     
+    public Message send(Sendable message, Message reply){
+        JsonObject j = message.toJson();
+        j.add("chat_id", reply.CHAT.ID);
+        j.add("reply_to_message_id", reply.ID);
+        return Message.newMessage(((JsonObject)http(message.methodName(), j)).get("result").asObject());
+    }
+    
     /**
      * Sends a text message.<br><br>
      * To get access to more options, use {@link #send(bot.send.Sendable, bot.Chat) }
@@ -440,7 +447,7 @@ public abstract class Bot{
      * @return The sent message.
      */
     public Message send(String text, Message replyTo){
-        return send(new SendableText(text).reply(replyTo), replyTo.CHAT);
+        return send(new SendableText(text), replyTo);
     }
     
     /**

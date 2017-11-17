@@ -18,7 +18,6 @@ public abstract class Sendable {
     
     private boolean notifications = true;
     private boolean webPreview = true;
-    private Message replyTo = null;
     private ReplyMarkup markup = null;
     
     /**
@@ -40,16 +39,6 @@ public abstract class Sendable {
     }
     
     /**
-     * Sets this message as a reply.
-     * @param reply the message you are replying to
-     * @return this object to allow method-chaining.
-     */
-    public Sendable reply(Message reply){
-        replyTo = reply;
-        return this;
-    }
-    
-    /**
      * Sets the markup of this message.
      * @param markup the markup you are interested in.
      * @return this object to allow method-chaining.
@@ -63,7 +52,6 @@ public abstract class Sendable {
         JsonObject j = new JsonObject();
         j.add("disable_notification", !notifications);
         j.add("disable_web_page_preview", !webPreview);
-        if(replyTo != null)     j.add("reply_to_message_id", replyTo.ID);
         if(markup != null)      j.add("reply_markup", markup.toJson());
         return j;
     }
