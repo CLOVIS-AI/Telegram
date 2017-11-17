@@ -8,6 +8,7 @@ package bot.messages;
 import bot.Chat;
 import bot.MandatoryFieldOmittedException;
 import bot.User;
+import bot.send.Sendable;
 import minimaljson.JsonObject;
 import minimaljson.JsonValue;
 import minimaljson.WriterConfig;
@@ -120,6 +121,14 @@ public class Message{
         else{
             throw new UnsupportedOperationException("This type of message is not supported : " + json.toString(WriterConfig.PRETTY_PRINT));
         }
+    }
+    
+    /**
+     * Convert this message to a Sendable object so you can send it/reply to it.
+     * @return A Sendable object of this message.
+     */
+    public final Sendable toSendable(){
+        return Sendable.newSendable(this);
     }
     
     /**

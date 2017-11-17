@@ -5,7 +5,7 @@
  */
 package bot.send;
 
-import bot.messages.Message;
+import bot.messages.*;
 import bot.replymarkup.ReplyMarkup;
 import minimaljson.JsonObject;
 import minimaljson.JsonValue;
@@ -54,6 +54,12 @@ public abstract class Sendable {
         j.add("disable_web_page_preview", !webPreview);
         if(markup != null)      j.add("reply_markup", markup.toJson());
         return j;
+    }
+    
+    public static Sendable newSendable(Message m){
+        if(m instanceof TextMessage)    return new SendableText(((TextMessage) m).TEXT);
+        else
+            throw new UnsupportedOperationException("This message type can not yet be converted as a Sendable : " + m.toString());
     }
     
     public abstract String methodName();
