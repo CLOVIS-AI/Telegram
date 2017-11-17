@@ -24,7 +24,9 @@ public class Chat {
     public final String USERNAME;
     /** (Optional)<br> True if a group has "All members are admins" enabled. */
     public final boolean ALL_MEMBERS_ADMIN;
-    // @TODO : PHOTO
+    /** (Optional : only with {@link Bot#getChat(bot.Chat) getChat})<br>Chat photo.<br><br>
+     This field is not available through updates. You can use {@link Bot#getPhotos(bot.Chat)} to get it.*/
+    public final Photo PHOTO;
     /** (Optional : only with Bot.getChat)<br> Description of the group for supergroups and channels. */
     public final String DESCRIPTION;
     /** (Optional : only with Bot.getChat, supergroup or channel)<br> Invite link to this chat. */
@@ -46,6 +48,11 @@ public class Chat {
         DESCRIPTION =       json.getString("description", null);
         INVITE_LINK =       json.getString("invite_link", null);
         
+        if(json.get("photo") != null)
+            PHOTO = new Photo(json.get("photo").asObject());
+        else
+            PHOTO = null;
+        
         if(ID == 0){
             throw new MandatoryFieldOmittedException("Field ID is mandatory.", json);
         }
@@ -65,9 +72,9 @@ public class Chat {
     }
     
     /**
-     * Creates an empty Chat object, to be used to make a request (ex. to hardcode the destination).
-     * <b>DO NOT USE ANYWHERE EXCEPT THE SEND... METHODS !</b>
+     * Creates an empty Chat object.
      * @param ID unique identifier of this Chat
+     * @deprecated Use {@link Bot#getChat(long) Bot.getChat(ID)} instead.
      */
     public Chat(long ID){
         this.ID = ID;
@@ -77,6 +84,7 @@ public class Chat {
         ALL_MEMBERS_ADMIN = false;
         DESCRIPTION = null;
         INVITE_LINK = null;
+        PHOTO = null;
     }
     
     @Override
@@ -131,6 +139,23 @@ public class Chat {
                 case "channel":     return CHANNEL;
                 default:            throw new IllegalArgumentException(type + " is not an allowed argument.");
             }
+        }
+    }
+    
+    public class Photo{
+        /**
+         * Unique file identifier of small (160x160) chat photo. This file_id can be used only for photo download.
+         */
+        public final String SMALL;
+        
+        /**
+         * Unique file identifier of big (640x640) chat photo. This file_id can be used only for photo download.
+         */
+        public final String BIG;
+        
+        public Photo(JsonObject json){
+            SMALL = json.getString("small_file_id", null);
+            BIG = json.getString("big_file_id", null);
         }
     }
 }

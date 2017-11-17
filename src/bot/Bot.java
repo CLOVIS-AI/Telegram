@@ -118,6 +118,12 @@ public abstract class Bot{
     }
     
     /**
+     * Use this method to initialize your values.
+     * @see #getChat(long) Create a Chat
+     */
+    public abstract void setup();
+    
+    /**
      * Sets the frequency of the automatical updates.
      * @param time time between each update, in seconds ; default = 1000s
      * @exception IllegalArgumentException if time is lesser than 0.
@@ -208,6 +214,55 @@ public abstract class Bot{
     public void onMemberLeaving(LeftMember member){}
     
     /**
+     * Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
+     * @param id unique identifier for the target chat
+     * @return The Chat object.
+     */
+    public Chat getChat(long id){
+        JsonObject j = new JsonObject();
+        j.add("chat_id", id);
+        return Chat.newChat(((JsonObject)http("getChat", j)).get("result").asObject());
+    }
+    
+    /**
+     * Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
+     * @param username unique identifier for the target chat
+     * @return The Chat object.
+     */
+    public Chat getChat(String username){
+        JsonObject j = new JsonObject();
+        j.add("chat_id", username);
+        return Chat.newChat(((JsonObject)http("getChat", j)).get("result").asObject());
+    }
+    
+    /**
+     * Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
+     * @param chat the Chat you want more infos on
+     * @return The Chat object.
+     */
+    public Chat getChat(Chat chat){
+        return getChat(chat.ID);
+    }
+    
+    /**
+     * Use this method to get the photos of a chat.
+     * @param chat the Chat you want more infos on
+     * @return The Photo object this chat should have.
+     */
+    public Chat.Photo getPhotos(Chat chat){
+        return getChat(chat).PHOTO;
+    }
+    
+    /**
+     * Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
+     * @param user the Chat you want more infos on
+     * @return The Chat object.
+     */
+    public Chat getUser(User user){
+        return getChat(user);
+    }
+    
+    /**
      * Connects to the Telegram server to get new updates, then calls
      * {@link #onEveryUpdate(bot.updates.Update) onEveryUpdate()} on every update.
      * @param longPolling if no updates are available, how long should the
@@ -269,6 +324,7 @@ public abstract class Bot{
             maxUpdateID = max(u.UPDATE_ID, maxUpdateID)+1;
         }
     }
+    
     /**
      * Call to get automatical updates. This method will never end, as long as
      * the thread calling it is alive.<br>
