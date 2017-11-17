@@ -5,6 +5,8 @@
  */
 package bot.updates;
 
+import bot.messages.NewMembers;
+import bot.messages.LeftMember;
 import minimaljson.JsonObject;
 import minimaljson.WriterConfig;
 
@@ -35,8 +37,6 @@ public abstract class Update {
         else if(json.get("edited_message") != null){ return new EditedMessageUpdate(json); }
         else if(json.get("channel_post") != null){ return new ChannelPostUpdate(json); }
         else if(json.get("edited_channel_post") != null){ return new EditedChannelPostUpdate(json); }
-        else if(json.get("new_chat_members") != null)   return new NewMembers(json);
-        else if(json.get("left_chat_member") != null)   return new LeftMember(json);
         // TODO
         else{
             throw new UnsupportedOperationException("This update is either invalid or not yet implemented in the API :\n" + json.toString(WriterConfig.PRETTY_PRINT));

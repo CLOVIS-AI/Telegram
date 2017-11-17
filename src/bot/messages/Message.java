@@ -10,6 +10,7 @@ import bot.MandatoryFieldOmittedException;
 import bot.User;
 import minimaljson.JsonObject;
 import minimaljson.JsonValue;
+import minimaljson.WriterConfig;
 
 /**
  *
@@ -114,8 +115,10 @@ public class Message{
         else if(json.get("voice") != null){ return new VoiceMessage(json); }
         else if(json.get("video") != null){ return new VideoMessage(json); }
         else if(json.get("video_note") != null){ return new VideoNoteMessage(json); }
+        else if(json.get("new_chat_members") != null){ return new NewMembers(json); }
+        else if(json.get("left_chat_member") != null){ return new LeftMember(json); }
         else{
-            throw new UnsupportedOperationException("This type of message is not supported : " + json.toString());
+            throw new UnsupportedOperationException("This type of message is not supported : " + json.toString(WriterConfig.PRETTY_PRINT));
         }
     }
     

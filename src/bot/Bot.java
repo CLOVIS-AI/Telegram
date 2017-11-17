@@ -18,9 +18,9 @@ import bot.send.SendableText;
 import bot.updates.ChannelPostUpdate;
 import bot.updates.EditedChannelPostUpdate;
 import bot.updates.EditedMessageUpdate;
-import bot.updates.LeftMember;
+import bot.messages.LeftMember;
 import bot.updates.MessageUpdate;
-import bot.updates.NewMembers;
+import bot.messages.NewMembers;
 import bot.updates.Update;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -198,14 +198,14 @@ public abstract class Bot{
      * (the bot itself may be one of these members).
      * @param users the users who joined the group
      */
-    public void onMembersJoining(User[] users){}
+    public void onMembersJoining(NewMembers members){}
     
     /**
      * This method is called when a user leaves a chat where the bot is
      * (the use may be the bot itself).
      * @param user the user who left the group
      */
-    public void onMemberLeaving(User user){}
+    public void onMemberLeaving(LeftMember member){}
     
     /**
      * Connects to the Telegram server to get new updates, then calls
@@ -258,10 +258,10 @@ public abstract class Bot{
                 else if(m instanceof VoiceMessage)  onEditedPost((VoiceMessage)m);
                 else if(m instanceof VideoMessage)  onEditedPost((VideoMessage)m);
                 else if(m instanceof VideoNoteMessage)     onEditedPost((VideoNoteMessage)m);
-            }else if(u instanceof NewMembers){
-                onMembersJoining(((NewMembers)u).USERS);
-            }else if(u instanceof LeftMember){
-                onMemberLeaving(((LeftMember)u).USER);
+            }else if(u instanceof MessageUpdate && ((MessageUpdate)u).MESSAGE instanceof NewMembers){
+                onMembersJoining((NewMembers)((MessageUpdate)u).MESSAGE);
+            }else if(u instanceof MessageUpdate && ((MessageUpdate)u).MESSAGE instanceof LeftMember){
+                onMemberLeaving((LeftMember)((MessageUpdate)u).MESSAGE);
             }else{
                 throw new UnsupportedOperationException("Unsupported update : " + u.toString());
             }

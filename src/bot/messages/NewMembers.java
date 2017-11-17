@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bot.updates;
+package bot.messages;
 
 import bot.User;
 import minimaljson.JsonArray;
@@ -13,7 +13,7 @@ import minimaljson.JsonObject;
  *
  * @author CLOVIS
  */
-public class NewMembers extends Update {
+public class NewMembers extends Message {
 
     /** The users who just joined the chat. The bot may be one of these members. */
     public final User[] USERS;
