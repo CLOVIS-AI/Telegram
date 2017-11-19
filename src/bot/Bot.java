@@ -205,14 +205,14 @@ public abstract class Bot{
     /**
      * This method is called when new users join a chat where the bot is
      * (the bot itself may be one of these members).
-     * @param users the users who joined the group
+     * @param members a Message object of the members who joined.
      */
     public void onMembersJoining(NewMembers members){}
     
     /**
      * This method is called when a user leaves a chat where the bot is
      * (the use may be the bot itself).
-     * @param user the user who left the group
+     * @param member a Messabe object of the member who left.
      */
     public void onMemberLeaving(LeftMember member){}
     
@@ -456,6 +456,15 @@ public abstract class Bot{
      */
     public Message reply(String text, Message replyTo){
         return reply(new SendableText(text), replyTo);
+    }
+    
+    /**
+     * Convenience method for text messages.
+     * @param text the text of the message
+     * @return <code>new SendableText(text)</code>
+     */
+    public SendableText text(String text){
+        return new SendableText(text);
     }
     
     /**
