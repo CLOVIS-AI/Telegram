@@ -22,6 +22,7 @@ import bot.messages.LeftMember;
 import bot.updates.MessageUpdate;
 import bot.messages.NewMembers;
 import bot.send.Sendable;
+import bot.send.SendableAudio;
 import bot.send.SendablePhoto;
 import bot.types.others.PhotoSize;
 import bot.updates.Update;
@@ -448,6 +449,18 @@ public abstract class Bot{
     }
     
     /**
+     * Sends an audio message.<br><br>
+     * To get access to more options, use {@link #send(bot.send.Sendable, bot.Chat) }
+     * with {@link SendableAudio}
+     * @param audio audio you want to send 
+     * @param chat the chat where it should be sent
+     * @return The sent message.
+     */
+    public Message send(AudioMessage audio, Chat chat){
+        return send(audio(audio), chat);
+    }
+    
+    /**
      * Replies to a message.
      * @param message the message you want to send
      * @param replyTo the message you are replying to
@@ -470,6 +483,30 @@ public abstract class Bot{
      */
     public Message reply(String text, Message replyTo){
         return reply(new SendableText(text), replyTo);
+    }
+    
+    /**
+     * Replies with an audio message.<br><br>
+     * To get access to more options, use {@link #reply(bot.send.Sendable, bot.messages.Message) }
+     * with {@link SendablePhoto}
+     * @param photo photo you want to send
+     * @param message the message you're replying to
+     * @return The sent message.
+     */
+    public Message reply(PhotoMessage photo, Message message){
+        return reply(photo(photo), message);
+    }
+    
+    /**
+     * Replies with an audio message.<br><br>
+     * To get access to more options, use {@link #reply(bot.send.Sendable, bot.messages.Message) }
+     * with {@link SendableAudio}
+     * @param audio audio you want to send 
+     * @param message the message you're replying to
+     * @return The sent message.
+     */
+    public Message reply(AudioMessage audio, Message message){
+        return reply(audio(audio), message);
     }
     
     /**
@@ -506,6 +543,24 @@ public abstract class Bot{
      */
     public SendablePhoto photo(PhotoSize photo){
         return new SendablePhoto(photo);
+    }
+    
+    /**
+     * Convenience method for audio messages.
+     * @param audio the audio to send again
+     * @return <code>return new SendableAudio(audio);</code>
+     */
+    public SendableAudio audio(AudioMessage audio){
+        return new SendableAudio(audio);
+    }
+    
+    /**
+     * Convenience method for audio messages.
+     * @param url the url of the audio message
+     * @return <code>return new SendableAudio(url);</code>
+     */
+    public SendableAudio audio(String url){
+        return new SendableAudio(url);
     }
     
     /**
