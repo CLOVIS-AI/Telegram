@@ -16,7 +16,6 @@ import minimaljson.JsonObject;
 public class SendablePhoto extends SendableFile {
 
     private final String ID;
-    private String caption = null;
     
     /**
      * Creates a sendable photo message, using the URL to an image.
@@ -42,18 +41,6 @@ public class SendablePhoto extends SendableFile {
         ID = photo.ID;
     }
     
-    /**
-     * Adds a caption to the photo. Can be used even if the photo is a repost.
-     * @param caption the caption, 0-200 characters.
-     * @return This object, to allow method-chaining.
-     */
-    public SendablePhoto setCaption(String caption){
-        if(caption.length() > 200)
-            throw new IllegalArgumentException("The field 'caption' should not be longer than 200 characters ; found " + caption.length());
-        this.caption = caption;
-        return this;
-    }
-    
     @Override
     public String methodName() {
         return "sendPhoto";
@@ -63,7 +50,6 @@ public class SendablePhoto extends SendableFile {
     public JsonObject toJson(){
         JsonObject j = super.toJson();
         j.add("photo", ID);
-        j.add("caption", caption);
         return j;
     }
     
