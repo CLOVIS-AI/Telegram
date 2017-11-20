@@ -56,7 +56,8 @@ public abstract class Sendable {
     }
     
     public static Sendable newSendable(Message m){
-        if(m instanceof TextMessage)    return new SendableText(((TextMessage) m).TEXT);
+        if(m instanceof TextMessage)            return new SendableText(((TextMessage) m).TEXT);
+        else if(m instanceof PhotoMessage)      return new SendablePhoto(((PhotoMessage) m));
         else
             throw new UnsupportedOperationException("This message type can not yet be converted as a Sendable : " + m.toString());
     }

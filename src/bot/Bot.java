@@ -22,6 +22,8 @@ import bot.messages.LeftMember;
 import bot.updates.MessageUpdate;
 import bot.messages.NewMembers;
 import bot.send.Sendable;
+import bot.send.SendablePhoto;
+import bot.types.others.PhotoSize;
 import bot.updates.Update;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -434,6 +436,18 @@ public abstract class Bot{
     }
     
     /**
+     * Sends a photo.<br><br>
+     * To get access to more options, use {@link #send(bot.send.Sendable, bot.Chat) }
+     * with {@link SendablePhoto}
+     * @param photo photo you want to send 
+     * @param chat the chat where it should be sent
+     * @return The sent message.
+     */
+    public Message send(PhotoMessage photo, Chat chat){
+        return send(photo(photo), chat);
+    }
+    
+    /**
      * Replies to a message.
      * @param message the message you want to send
      * @param replyTo the message you are replying to
@@ -465,6 +479,33 @@ public abstract class Bot{
      */
     public SendableText text(String text){
         return new SendableText(text);
+    }
+    
+    /**
+     * Convenience method for photo messages.
+     * @param url the url of the photo to send
+     * @return <code>return new SendablePhoto(url);</code>
+     */
+    public SendablePhoto photo(String url){
+        return new SendablePhoto(url);
+    }
+    
+    /**
+     * Convenience method for photo messages.
+     * @param photo the photo to send again
+     * @return <code>return new SendablePhoto(photo);</code>
+     */
+    public SendablePhoto photo(PhotoMessage photo){
+        return new SendablePhoto(photo);
+    }
+    
+    /**
+     * Convenience method for photo messages.
+     * @param photo the photo to send again
+     * @return <code>return new SendablePhoto(photo);</code>
+     */
+    public SendablePhoto photo(PhotoSize photo){
+        return new SendablePhoto(photo);
     }
     
     /**
