@@ -20,7 +20,7 @@ public abstract class SendableFile extends Sendable {
      * @param caption the caption, 0-200 characters.
      * @return This object, to allow method-chaining.
      */
-    public SendableFile setCaption(String caption){
+    public SendableFile caption(String caption){
         if(caption.length() > 200)
             throw new IllegalArgumentException("The field 'caption' should not be longer than 200 characters ; found " + caption.length());
         this.caption = caption;
