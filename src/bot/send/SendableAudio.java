@@ -53,7 +53,7 @@ public class SendableAudio extends SendableFile {
     }
     
     /**
-     * Specifies the performer of this file.
+     * Specifies the performer of this file. This will not work if the audio file was sent using an {@link AudioMessage}.
      * @param perf the performer's name
      * @return This object, to allow method-chaining.
      */
@@ -63,7 +63,7 @@ public class SendableAudio extends SendableFile {
     }
     
     /**
-     * Specifies the title of this file.
+     * Specifies the title of this file.  This will not work if the audio file was sent using an {@link AudioMessage}.
      * @param title the title
      * @return This object, to allow method-chaining.
      */
