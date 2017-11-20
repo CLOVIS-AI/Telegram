@@ -118,6 +118,7 @@ public class Message{
         else if(json.get("video_note") != null){ return new VideoNoteMessage(json); }
         else if(json.get("new_chat_members") != null){ return new NewMembers(json); }
         else if(json.get("left_chat_member") != null){ return new LeftMember(json); }
+        else if(json.get("audio") != null){ return new AudioMessage(json); }
         else{
             throw new UnsupportedOperationException("This type of message is not supported : " + json.toString(WriterConfig.PRETTY_PRINT));
         }
