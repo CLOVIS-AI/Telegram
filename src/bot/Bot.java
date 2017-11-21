@@ -24,6 +24,7 @@ import bot.messages.NewMembers;
 import bot.send.Sendable;
 import bot.send.SendableAudio;
 import bot.send.SendablePhoto;
+import bot.send.SendableVideo;
 import bot.types.others.PhotoSize;
 import bot.updates.Update;
 import java.io.BufferedReader;
@@ -461,6 +462,18 @@ public abstract class Bot{
     }
     
     /**
+     * Sends a video message.<br><br>
+     * To get access to more options, use {@link #send(bot.send.Sendable, bot.Chat) }
+     * with {@link SendableVideo}
+     * @param video video you want to send 
+     * @param chat the chat where it should be sent
+     * @return The sent message.
+     */
+    public Message send(VideoMessage video, Chat chat){
+        return send(video(video), chat);
+    }
+    
+    /**
      * Replies to a message.
      * @param message the message you want to send
      * @param replyTo the message you are replying to
@@ -507,6 +520,18 @@ public abstract class Bot{
      */
     public Message reply(AudioMessage audio, Message message){
         return reply(audio(audio), message);
+    }
+    
+    /**
+     * Replies with an audio message.<br><br>
+     * To get access to more options, use {@link #reply(bot.send.Sendable, bot.messages.Message) }
+     * with {@link SendableVideo}
+     * @param video video you want to send 
+     * @param message the message you're replying to
+     * @return The sent message.
+     */
+    public Message reply(VideoMessage video, Message message){
+        return reply(video(video), message);
     }
     
     /**
@@ -561,6 +586,24 @@ public abstract class Bot{
      */
     public SendableAudio audio(String url){
         return new SendableAudio(url);
+    }
+    
+    /**
+     * Convenience method for video messages.
+     * @param url the url of the video message
+     * @return <code>return new SendableVideo(url);</code>
+     */
+    public SendableVideo video(String url){
+        return new SendableVideo(url);
+    }
+    
+    /**
+     * Convenience method for video messages.
+     * @param message the video you want to resend
+     * @return <code>return new SendableVideo(url);</code>
+     */
+    public SendableVideo video(VideoMessage message){
+        return new SendableVideo(message);
     }
     
     /**
