@@ -26,8 +26,10 @@ import bot.send.SendableAudio;
 import bot.send.SendablePhoto;
 import bot.send.SendableVideo;
 import bot.updates.Update;
+import bot.utils.MultipartUtility;
 import bot.utils.others.PhotoSize;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -40,6 +42,8 @@ import java.net.HttpURLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import minimaljson.Json;
 import minimaljson.JsonArray;
 import minimaljson.JsonObject;
@@ -349,6 +353,7 @@ public abstract class Bot{
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             System.out.println(dateFormat.format(new Date()) + "\tAuto-updating bot ...");
             update((int) updateTimeout);
+            System.gc();
         }
         autoUpdateActivated = false;
     }
@@ -616,12 +621,13 @@ public abstract class Bot{
      * @see http(String);
      */
     private JsonValue http(String method, JsonObject parameters) throws CannotSendMessageException{
-        URL url; 
+        URL url;
+        HttpURLConnection conn = null;
         try {
             url = new URL("https://api.telegram.org/bot" + TOKEN + "/" + method);
             byte[] postDataBytes = parameters.toString().getBytes("UTF-8");
 
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
@@ -641,7 +647,7 @@ public abstract class Bot{
         } catch (FileNotFoundException ex){
             System.err.println("The command " + method + " does not exist : " + ex.getMessage());
         } catch (IOException ex) {
-            throw new CannotSendMessageException(ex, parameters);
+            throw new CannotSendMessageException(ex, parameters, conn);
         }
         return null;
     }
@@ -654,6 +660,34 @@ public abstract class Bot{
      */
     private JsonValue http(String method){
         return http(method, Json.parse("{\"status\":null}").asObject());
+    }
+    
+    /**
+     * Uploads a file.
+     * @param method the method of the Telegram bot API (eg. sendPhoto)
+     * @param type type of the file (eg. photo)
+     * @param file the file
+     * @param parameters other parameters
+     * @return The reply from the Telegram servers.
+     */
+    public JsonValue upload(String method, String type, File file, JsonObject parameters){
+        System.out.print("Uploading " + type + " : " + file);
+        try {
+            System.out.print(" BUILD");
+            MultipartUtility mu = new MultipartUtility("https://api.telegram.org/bot" + TOKEN + "/" + method);
+            mu.addFilePart(type, file);
+            for(JsonObject.Member j : parameters)
+                mu.addFormField(j.getName(), j.getValue().toString());
+            System.out.print(" UPLOAD");
+            String response = "";
+            for(String s : mu.finish())
+                response += s;
+            System.out.println(" DONE.");
+            System.gc();
+            return Json.parse(response);
+        } catch (IOException ex) {
+            throw new CannotSendMessageException(ex, parameters, null);
+        }
     }
     
     /**
@@ -685,8 +719,10 @@ public abstract class Bot{
     }
     
     public class CannotSendMessageException extends RuntimeException {
-        public CannotSendMessageException(IOException ex, JsonValue j){
-            super("ERROR WHILE SENDING MESSAGE :\n" + ex.getMessage() + "\nWITH OPTIONS : \n" + j.toString(WriterConfig.PRETTY_PRINT));
+        public CannotSendMessageException(IOException ex, JsonValue j, HttpURLConnection conn){
+            super("ERROR WHILE SENDING MESSAGE :\n" + ex.getMessage()
+                + "\nWITH OPTIONS : \n" + j.toString(WriterConfig.PRETTY_PRINT)
+                + "\nFROM SERVER :\n" + MultipartUtility.getStringFromInputStream(conn.getErrorStream()));
         }
     }
 }
