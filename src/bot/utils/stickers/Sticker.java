@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bot.types.stickers;
+package bot.utils.stickers;
 
 import bot.MandatoryFieldOmittedException;
-import bot.types.others.PhotoSize;
+import bot.utils.others.PhotoSize;
 import minimaljson.JsonObject;
 
 /**

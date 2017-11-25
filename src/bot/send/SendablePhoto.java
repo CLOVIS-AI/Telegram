@@ -6,7 +6,7 @@
 package bot.send;
 
 import bot.messages.PhotoMessage;
-import bot.types.others.PhotoSize;
+import bot.utils.others.PhotoSize;
 import minimaljson.JsonObject;
 
 /**

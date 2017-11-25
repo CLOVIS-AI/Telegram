@@ -7,7 +7,7 @@ package bot.messages;
 
 import bot.MandatoryFieldOmittedException;
 import minimaljson.JsonObject;
-import bot.types.others.PhotoSize;
+import bot.utils.others.PhotoSize;
 
 /**
  *
