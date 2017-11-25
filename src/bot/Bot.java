@@ -128,7 +128,7 @@ public abstract class Bot{
      * Use this method to initialize your values.
      * @see #getChat(long) Create a Chat
      */
-    public abstract void setup();
+    public void setup(){}
     
     /**
      * Sets the frequency of the automatical updates.
