@@ -615,7 +615,7 @@ public abstract class Bot{
      * @return The reply from the Telegram servers.
      * @see http(String);
      */
-    private JsonValue http(String method, JsonObject parameters){
+    private JsonValue http(String method, JsonObject parameters) throws CannotSendMessageException{
         URL url; 
         try {
             url = new URL("https://api.telegram.org/bot" + TOKEN + "/" + method);
@@ -641,7 +641,7 @@ public abstract class Bot{
         } catch (FileNotFoundException ex){
             System.err.println("The command " + method + " does not exist : " + ex.getMessage());
         } catch (IOException ex) {
-            System.err.println("ERROR WHILE SENDING MESSAGE : " + ex.getMessage() + " WITH OPTIONS : \n" + parameters.toString(WriterConfig.PRETTY_PRINT));
+            throw new CannotSendMessageException(ex, parameters);
         }
         return null;
     }
@@ -681,6 +681,12 @@ public abstract class Bot{
             public String toString(){
                 return "HTML";
             }
+        }
+    }
+    
+    public class CannotSendMessageException extends RuntimeException {
+        public CannotSendMessageException(IOException ex, JsonValue j){
+            super("ERROR WHILE SENDING MESSAGE :\n" + ex.getMessage() + "\nWITH OPTIONS : \n" + j.toString(WriterConfig.PRETTY_PRINT));
         }
     }
 }
