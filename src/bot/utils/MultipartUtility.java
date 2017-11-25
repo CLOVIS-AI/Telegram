@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -58,25 +59,6 @@ public class MultipartUtility {
         outputStream = httpConn.getOutputStream();
         writer = new PrintWriter(new OutputStreamWriter(outputStream, "UTF-8"),
                 true);
-    }
-    
-    /**
-     * Uploads a file.
-     * @param url the URL to upload the file
-     * @param files the files to upload
-     * @return 
-     * @throws IOException 
-     */
-    public static JsonValue upload(String url, List<File> files) throws IOException{
-        MultipartUtility m = new MultipartUtility(url);
-        m.addHeaderField("User-Agent", "CLOVIS' Bot API");
-        m.addHeaderField("Test-Header", "Header-Value");
-        for(File f : files)
-            m.addFilePart("fileUpload", f);
-        String response = "";
-        for(String s : m.finish())
-            response += s;
-        return Json.parse(response);
     }
  
     /**
@@ -165,11 +147,40 @@ public class MultipartUtility {
             }
             httpConn.disconnect();
         } else {
-            throw new IOException("Server returned non-OK status: " + status);
+            throw new IOException("Server returned non-OK status: " + getStringFromInputStream(httpConn.getErrorStream()));
         }
  
         return response;
     }
     
- 
+    // convert InputStream to String
+    /**
+     * Converts an InputStream into a String.
+     * <p>This method comes from
+     * <a href=https://www.mkyong.com/java/how-to-convert-inputstream-to-string-in-java/>mkyong.com</a>
+     * @param is the input stream
+     * @return A String object containing the InputStream.
+     */
+    public static String getStringFromInputStream(InputStream is) {
+            BufferedReader br = null;
+            StringBuilder sb = new StringBuilder();
+            String line;
+            try {
+                br = new BufferedReader(new InputStreamReader(is));
+                while ((line = br.readLine()) != null) {
+                        sb.append(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (br != null) {
+                        try {
+                                br.close();
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                        }
+                }
+            }
+            return sb.toString();
+    }
 }
