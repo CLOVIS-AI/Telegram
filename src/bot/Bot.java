@@ -339,7 +339,7 @@ public abstract class Bot{
     /**
      * Call to get automatical updates. This method will never end, as long as
      * the thread calling it is alive.<br>
-     * To get updates without blocking the code flow, use {@link #update() }.
+     * To get updates without blocking the code flow, use {@link #update(int) update(int)}.
      * @exception IllegalThreadStateException if called twice at the same time
      */
     @SuppressWarnings("SleepWhileInLoop")
@@ -493,7 +493,7 @@ public abstract class Bot{
     
     /**
      * Replies with a text message.<br><br>
-     * To get access to more options, use {@link #reply(bot.send.Sendable, bot.Chat) }
+     * To get access to more options, use {@link #reply(bot.send.Sendable, bot.messages.Message) reply(Sendable, Message) }
      * with {@link SendableText}.
      * @param text text of the message you want to send
      * @param replyTo the message you are replying to

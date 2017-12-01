@@ -146,8 +146,7 @@ public class Chat {
      */
     public enum Type{
         /** This chat is private : the bot is talking one-on-one to a user.
-          * In this case, the fields {@link #FIRST_NAME first name} and
-          * {@link #LAST_NAME last name} may be used to get info on the user.*/
+          * In this case, the method {@link #asUser() asUser()} may be used to get info on the user.*/
         PRIVATE,
         /** This chat is a group. */
         GROUP,

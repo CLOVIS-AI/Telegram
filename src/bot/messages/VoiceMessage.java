@@ -20,7 +20,7 @@ public class VoiceMessage extends FileMessage {
     /**
      * Creates a voice message.
      * @param json data of this object from the Telegram servers
-     * @throws MandatoryFieldOmittedException 
+     * @throws MandatoryFieldOmittedException {@link FileMessage#FileMessage(minimaljson.JsonObject, minimaljson.JsonObject) see in FileMessage}
      */
     public VoiceMessage(JsonObject json) throws MandatoryFieldOmittedException {
         super(json, json.get("voice").asObject());

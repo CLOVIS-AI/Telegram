@@ -24,7 +24,7 @@ public class DocumentMessage extends FileMessage {
     /**
      * Creates a document.
      * @param json data from the Telegram servers
-     * @throws MandatoryFieldOmittedException 
+     * @throws MandatoryFieldOmittedException {@link FileMessage#FileMessage(minimaljson.JsonObject, minimaljson.JsonObject) see in FileMessage}
      */
     public DocumentMessage(JsonObject json) throws MandatoryFieldOmittedException {
         super(json, json.get("document").asObject());

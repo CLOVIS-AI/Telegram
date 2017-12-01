@@ -19,7 +19,7 @@ public class SendablePhoto extends SendableFile {
     
     /**
      * Creates a sendable photo message, using the URL to an image.
-     * @param url 
+     * @param url the photo you want to send
      */
     public SendablePhoto(String url){
         ID = url;

@@ -89,7 +89,8 @@ public class Message{
     
     /**
      * Creates an empty Message object. <b>DO NOT USE ANYWHERE EXCEPT THE SEND... METHODS !</b>
-     * @param ID 
+     * @param ID ID of this message
+     * @deprecated
      */
     public Message(long ID){
         this.ID = ID;
