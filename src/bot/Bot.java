@@ -24,6 +24,7 @@ import bot.messages.NewMembers;
 import bot.send.Sendable;
 import bot.send.SendableAudio;
 import bot.send.SendablePhoto;
+import bot.send.SendableUpload;
 import bot.send.SendableVideo;
 import bot.updates.Update;
 import bot.utils.MultipartUtility;
@@ -268,8 +269,8 @@ public abstract class Bot{
      * @param user the Chat you want more infos on
      * @return The Chat object.
      */
-    public Chat getUser(User user){
-        return getChat(user);
+    public User getUser(User user){
+        return (User)getChat(user);
     }
     
     /**
@@ -426,6 +427,14 @@ public abstract class Bot{
     public Message send(Sendable message, Chat chat){
         JsonObject j = message.toJson();
         j.add("chat_id", chat.ID);
+        if(message instanceof SendableUpload){
+            SendableUpload upload = (SendableUpload) message;
+            if(upload.isNewUpload()){
+                return Message.newMessage(((JsonObject)upload(upload.methodName(), upload.type(), upload.file(), j)).get("result").asObject());
+            }else{
+                j.add(upload.type(), upload.id());
+            }
+        }
         return Message.newMessage(((JsonObject)http(message.methodName(), j)).get("result").asObject());
     }
     
@@ -487,6 +496,14 @@ public abstract class Bot{
         JsonObject j = message.toJson();
         j.add("chat_id", replyTo.CHAT.ID);
         j.add("reply_to_message_id", replyTo.ID);
+        if(message instanceof SendableUpload){
+            SendableUpload upload = (SendableUpload) message;
+            if(upload.isNewUpload()){
+                return Message.newMessage(((JsonObject)upload(upload.methodName(), upload.type(), upload.file(), j)).get("result").asObject());
+            }else{
+                j.add(upload.type(), upload.id());
+            }
+        }
         return Message.newMessage(((JsonObject)http(message.methodName(), j)).get("result").asObject());
     }
     
@@ -575,6 +592,15 @@ public abstract class Bot{
     }
     
     /**
+     * Convenience method for photo messages.
+     * @param file the photo to upload
+     * @return <code>return new SendablePhoto(photo);</code>
+     */
+    public SendablePhoto photo(File file){
+        return new SendablePhoto(file);
+    }
+    
+    /**
      * Convenience method for audio messages.
      * @param audio the audio to send again
      * @return <code>return new SendableAudio(audio);</code>
@@ -593,6 +619,15 @@ public abstract class Bot{
     }
     
     /**
+     * Convenience method for audio messages.
+     * @param file the file you want to upload
+     * @return <code>return new SendableAudio(file);</code>
+     */
+    public SendableAudio audio(File file){
+        return new SendableAudio(file);
+    }
+    
+    /**
      * Convenience method for video messages.
      * @param url the url of the video message
      * @return <code>return new SendableVideo(url);</code>
@@ -608,6 +643,15 @@ public abstract class Bot{
      */
     public SendableVideo video(VideoMessage message){
         return new SendableVideo(message);
+    }
+    
+    /**
+     * Convenience method for video messages.
+     * @param file the video you want to upload
+     * @return <code>return new SendableVideo(file);</code>
+     */
+    public SendableVideo video(File file){
+        return new SendableVideo(file);
     }
     
     /**
@@ -721,7 +765,7 @@ public abstract class Bot{
         public CannotSendMessageException(IOException ex, JsonValue j, HttpURLConnection conn){
             super("ERROR WHILE SENDING MESSAGE :\n" + ex.getMessage()
                 + "\nWITH OPTIONS : \n" + j.toString(WriterConfig.PRETTY_PRINT)
-                + "\nFROM SERVER :\n" + MultipartUtility.getStringFromInputStream(conn.getErrorStream()));
+                + "\nFROM SERVER :\n" + (conn != null ? MultipartUtility.getStringFromInputStream(conn.getErrorStream()) : "NO DATA"));
         }
     }
 }

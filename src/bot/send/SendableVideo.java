@@ -7,12 +7,13 @@ package bot.send;
 
 import bot.messages.VideoMessage;
 import minimaljson.JsonObject;
+import java.io.File;
 
 /**
  *
  * @author CLOVIS
  */
-public class SendableVideo extends SendableFile {
+public class SendableVideo extends SendableUpload {
 
     private String ID;
     private int duration = -1;
@@ -32,6 +33,14 @@ public class SendableVideo extends SendableFile {
      */
     public SendableVideo(VideoMessage video){
         ID = video.FILE_ID;
+    }
+    
+    /**
+     * Creates a sendable video.
+     * @param file the file you'd like to upload
+     */
+    public SendableVideo(File file){
+        super(file);
     }
     
     /**
@@ -70,7 +79,6 @@ public class SendableVideo extends SendableFile {
     @Override
     public JsonObject toJson(){
         JsonObject j = super.toJson();
-        j.add("video", ID);
         if(duration != -1)
             j.add("duration", duration);
         if(width != -1)
@@ -78,6 +86,16 @@ public class SendableVideo extends SendableFile {
         if(height != -1)
             j.add("height", height);
         return j;
+    }
+
+    @Override
+    public String type() {
+        return "video";
+    }
+
+    @Override
+    public String id() {
+        return ID;
     }
     
 }

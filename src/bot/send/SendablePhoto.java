@@ -7,15 +7,16 @@ package bot.send;
 
 import bot.messages.PhotoMessage;
 import bot.utils.others.PhotoSize;
+import java.io.File;
 import minimaljson.JsonObject;
 
 /**
  *
  * @author CLOVIS
  */
-public class SendablePhoto extends SendableFile {
+public class SendablePhoto extends SendableUpload {
 
-    private final String ID;
+    private String ID;
     
     /**
      * Creates a sendable photo message, using the URL to an image.
@@ -41,6 +42,14 @@ public class SendablePhoto extends SendableFile {
         ID = photo.ID;
     }
     
+    /**
+     * Creates a sendable photo message, using a file that will be uploaded.
+     * @param file the photo you want to upload
+     */
+    public SendablePhoto(File file){
+        super(file);
+    }
+    
     @Override
     public String methodName() {
         return "sendPhoto";
@@ -48,9 +57,17 @@ public class SendablePhoto extends SendableFile {
     
     @Override
     public JsonObject toJson(){
-        JsonObject j = super.toJson();
-        j.add("photo", ID);
-        return j;
+        return super.toJson();
+    }
+
+    @Override
+    public String type() {
+        return "photo";
+    }
+
+    @Override
+    public String id() {
+        return ID;
     }
     
 }
