@@ -42,8 +42,6 @@ import java.net.HttpURLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import minimaljson.Json;
 import minimaljson.JsonArray;
 import minimaljson.JsonObject;
@@ -110,6 +108,7 @@ public abstract class Bot{
      * To set the update frequency, see {@link}.
      * @param token token provided by BotFather
      */
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public Bot(String token){
         System.out.println("Connecting ...");
         
