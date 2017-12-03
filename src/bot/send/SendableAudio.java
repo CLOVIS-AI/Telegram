@@ -6,6 +6,7 @@
 package bot.send;
 
 import bot.messages.AudioMessage;
+import java.io.File;
 import minimaljson.JsonObject;
 
 /**
@@ -17,7 +18,7 @@ import minimaljson.JsonObject;
  * For sending voice messages, use the sendVoice method instead.
  * @author CLOVIS
  */
-public class SendableAudio extends SendableFile {
+public class SendableAudio extends SendableUpload {
 
     private String ID;
     private int duration = -1;
@@ -38,6 +39,14 @@ public class SendableAudio extends SendableFile {
      */
     public SendableAudio(AudioMessage audio){
         ID = audio.FILE_ID;
+    }
+    
+    /**
+     * Uploads a new audio message.
+     * @param file the file you want to upload
+     */
+    public SendableAudio(File file){
+        super(file);
     }
     
     /**
@@ -80,10 +89,19 @@ public class SendableAudio extends SendableFile {
     @Override
     public JsonObject toJson(){
         JsonObject j = super.toJson();
-        j.add("audio", ID);
         if(duration != -1)      j.add("duration", duration);
         if(performer != null)   j.add("performer", performer);
         if(title != null)       j.add("title", title);
         return j;
+    }
+
+    @Override
+    public String type() {
+        return "audio";
+    }
+
+    @Override
+    public String id() {
+        return ID;
     }
 }

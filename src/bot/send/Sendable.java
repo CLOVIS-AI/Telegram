@@ -47,6 +47,10 @@ public abstract class Sendable {
         return this;
     }
     
+    /**
+     * Converts this object to JSON.
+     * @return This object in JSON.
+     */
     public JsonObject toJson(){
         JsonObject j = new JsonObject();
         j.add("disable_notification", !notifications);
@@ -55,12 +59,23 @@ public abstract class Sendable {
         return j;
     }
     
+    /**
+     * Creates a Sendable object of this message.
+     * @param m the message to send again
+     * @return A Sendable object of a message.
+     */
     public static Sendable newSendable(Message m){
         if(m instanceof TextMessage)            return new SendableText(((TextMessage) m).TEXT);
-        else if(m instanceof PhotoMessage)      return new SendablePhoto(((PhotoMessage) m));
+        else if(m instanceof PhotoMessage)      return new SendablePhoto((PhotoMessage) m);
+        else if(m instanceof VideoMessage)      return new SendableVideo((VideoMessage) m);
+        else if(m instanceof AudioMessage)      return new SendableAudio((AudioMessage) m);
         else
             throw new UnsupportedOperationException("This message type can not yet be converted as a Sendable : " + m.toString());
     }
     
+    /**
+     * The name of the method.
+     * @return The name of the method.
+     */
     public abstract String methodName();
 }

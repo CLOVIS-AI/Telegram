@@ -45,7 +45,8 @@ public class User extends Chat {
     
     /**
      * Creates an empty User object. <b>DO NOT USE OUTSIDE OF THE SEND... METHODS !</b>
-     * @param ID 
+     * @param ID ID of this user
+     * @deprecated Use {@link Bot#getChat(long) Bot.getChat(ID)} instead.
      */
     public User(long ID){
         super(ID);
@@ -61,10 +62,10 @@ public class User extends Chat {
     }
     
     /**
-     * Gets a link usable in {@link Bot#send(bot.messages.TextMessage, bot.Chat) send}
+     * Gets a link usable in {@link Bot#send(String, bot.Chat) send}
      * that links to this user, using the appropriate markdown style.
      * @param display what does the link display
-     * @param markdown the markdown style you specified in {@link Bot#send(bot.messages.TextMessage, bot.Chat) send}
+     * @param markdown the markdown style you specified in {@link Bot#send(String, bot.Chat) send}
      * @return A usable link.
      */
     public String toMention(String display, Bot.ParseMode markdown){
@@ -77,10 +78,10 @@ public class User extends Chat {
     }
     
     /**
-     * Gets a link usable in {@link Bot#send(bot.messages.TextMessage, bot.Chat) send}
+     * Gets a link usable in {@link Bot#send(bot.send.Sendable, bot.Chat) send}
      * that links to this user, using the appropriate markdown style.<br>
      * The text of the link will be the first name of the user.
-     * @param markdown the markdown style you specified in {@link Bot#send(bot.messages.TextMessage, bot.Chat) send}
+     * @param markdown the markdown style you specified in {@link Bot#send(bot.send.Sendable, bot.Chat) send}
      * @return A usable link.
      */
     public String toMention(Bot.ParseMode markdown){

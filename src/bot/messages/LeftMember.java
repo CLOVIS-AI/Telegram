@@ -19,7 +19,7 @@ public class LeftMember extends Message {
     
     /**
      * Created when a user leaves a chat.
-     * @param json 
+     * @param json data from the Telegram servers
      */
     public LeftMember(JsonObject json) {
         super(json);
