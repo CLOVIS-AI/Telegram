@@ -17,8 +17,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import minimaljson.Json;
-import minimaljson.JsonValue;
 
 /**
  * This class is used internally by the API. It is kept public so you can use it

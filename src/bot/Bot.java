@@ -19,6 +19,7 @@ import bot.updates.ChannelPostUpdate;
 import bot.updates.EditedChannelPostUpdate;
 import bot.updates.EditedMessageUpdate;
 import bot.messages.LeftMember;
+import bot.messages.NewChatPhoto;
 import bot.updates.MessageUpdate;
 import bot.messages.NewMembers;
 import bot.send.Sendable;
@@ -42,8 +43,6 @@ import java.net.HttpURLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import minimaljson.Json;
 import minimaljson.JsonArray;
 import minimaljson.JsonObject;
@@ -220,9 +219,15 @@ public abstract class Bot{
     /**
      * This method is called when a user leaves a chat where the bot is
      * (the use may be the bot itself).
-     * @param member a Messabe object of the member who left.
+     * @param member a Message object of the member who left.
      */
     public void onMemberLeaving(LeftMember member){}
+    
+    /**
+     * This method is called when a chat's photo is modified.
+     * @param photo a Message object of the photo that changed
+     */
+    public void onNewChatPhoto(NewChatPhoto photo){}
     
     /**
      * Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
@@ -324,10 +329,17 @@ public abstract class Bot{
                 else if(m instanceof VoiceMessage){  onEditedPost((VoiceMessage)m); onEditedPost(m);}
                 else if(m instanceof VideoMessage){  onEditedPost((VideoMessage)m); onEditedPost(m);}
                 else if(m instanceof VideoNoteMessage){     onEditedPost((VideoNoteMessage)m); onEditedPost(m);}
-            }else if(u instanceof MessageUpdate && ((MessageUpdate)u).MESSAGE instanceof NewMembers){
-                onMembersJoining((NewMembers)((MessageUpdate)u).MESSAGE);
-            }else if(u instanceof MessageUpdate && ((MessageUpdate)u).MESSAGE instanceof LeftMember){
-                onMemberLeaving((LeftMember)((MessageUpdate)u).MESSAGE);
+            }else if(u instanceof MessageUpdate){
+                Message m = ((MessageUpdate) u).MESSAGE;
+                if(m instanceof NewMembers){
+                    onMembersJoining((NewMembers)m);
+                }else if(m instanceof LeftMember){
+                    onMemberLeaving((LeftMember)m);
+                }else if(m instanceof NewChatPhoto){
+                    onNewChatPhoto((NewChatPhoto)m);
+                }else{
+                    throw new UnsupportedOperationException("Unsupported message update : " + m.toString());
+                }
             }else{
                 throw new UnsupportedOperationException("Unsupported update : " + u.toString());
             }
