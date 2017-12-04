@@ -43,7 +43,9 @@ import java.net.URL;
 import java.net.HttpURLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import minimaljson.Json;
 import minimaljson.JsonArray;
 import minimaljson.JsonObject;
@@ -96,12 +98,18 @@ public abstract class Bot{
     /** Username of this bot. */
     public final String USERNAME;
     
+    private final List<Command> commands;
+    
     /** Time between two updates. */
     private long updateTimeout = 1000;
     
     private boolean autoUpdateActivated = false;
     
     private long maxUpdateID = 0;
+    
+    { // Initialization
+        commands = new ArrayList<>();
+    }
     
     /**
      * Creates a bot and connects it to the Telegram servers, and prints to the
@@ -293,7 +301,17 @@ public abstract class Bot{
             Update u = Update.newUpdate((JsonObject) value);
             if(u instanceof MessageUpdate){
                 Message m = ((MessageUpdate)u).MESSAGE;
-                if(m instanceof TextMessage){        onNewMessage((TextMessage)m); onNewMessage(m);}
+                if(m instanceof TextMessage){
+                    boolean correspondsToCommand = false;
+                    for(Command command : commands)
+                        if(command.reception((TextMessage)m)){
+                            correspondsToCommand = true;
+                            break;
+                        }
+                    if(!correspondsToCommand)
+                        onNewMessage((TextMessage)m);
+                    onNewMessage(m);
+                }
                 else if(m instanceof AudioMessage){  onNewMessage((AudioMessage)m); onNewMessage(m);}
                 else if(m instanceof PhotoMessage){  onNewMessage((PhotoMessage)m); onNewMessage(m);}
                 else if(m instanceof StickerMessage){onNewMessage((StickerMessage)m); onNewMessage(m);}
@@ -348,6 +366,7 @@ public abstract class Bot{
             onEveryUpdate(u);
             maxUpdateID = max(u.UPDATE_ID, maxUpdateID)+1;
         }
+        System.gc();
     }
     
     /**
@@ -669,6 +688,14 @@ public abstract class Bot{
     }
     
     /**
+     * Registers a new command.
+     * @param command the command to be registered
+     */
+    public void registerNewCommand(Command command){
+        commands.add(command);
+    }
+    
+    /**
      * Sends a HTTP request to the Telegram Bot API.<br/><br/>
      * This method is greatly inspired from 
      * <a href="https://stackoverflow.com/questions/4205980/java-sending-http-parameters-via-post-method-easily">Stack Overflow</a>.
@@ -788,6 +815,20 @@ public abstract class Bot{
             super("ERROR WHILE SENDING MESSAGE :\n" + ex.getMessage()
                 + "\nWITH OPTIONS : \n" + j.toString(WriterConfig.PRETTY_PRINT)
                 + "\nFROM SERVER :\n" + (conn != null ? MultipartUtility.getStringFromInputStream(conn.getErrorStream()) : "NO DATA"));
+        }
+    }
+    
+    /**
+     * A command object.
+     */
+    public abstract class BotCommand extends Command{
+        /**
+         * Creates a bot command.
+         * @param name name of the command
+         * @param onlyThisBot if you want this command to be triggered only when this bot is targetted
+         */
+        public BotCommand(String name, boolean onlyThisBot) {
+            super(name + (onlyThisBot ? "@" + USERNAME : ""));
         }
     }
 }

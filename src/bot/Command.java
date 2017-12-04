@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bot.messages;
+package bot;
+
+import bot.messages.TextMessage;
 
 /**
  * This class represents a command.
  * @author CLOVIS
  */
-public abstract class RegisteredCommand{
+abstract class Command{
     
     private final String command;
     private String separator = " ";
@@ -18,7 +20,7 @@ public abstract class RegisteredCommand{
      * Creates a command you will be able to register.
      * @param name the command itself ; example : "getInfos"
      */
-    public RegisteredCommand(String name){
+    public Command(String name){
         command = name;
     }
     
@@ -27,9 +29,11 @@ public abstract class RegisteredCommand{
      * <p>By default, <code>s=" "</code>. Use <code>null</code> if you do not
      * want the arguments to be split.
      * @param s the separator
+     * @return this object, to allow method-chaining.
      */
-    public final void setSeparator(String s){
+    public final Command setSeparator(String s){
         separator = s;
+        return this;
     }
     
     /**
@@ -39,15 +43,19 @@ public abstract class RegisteredCommand{
      */
     public final boolean reception(TextMessage message){
         int indexof = message.TEXT.indexOf('/' + command);
+        System.out.print("Test de " + message.TEXT);
         if(separator == null){
+            System.out.println(" valide");
             String args = message.TEXT.substring(command.length()+1, message.TEXT.length());
-            onCommand(new String[]{args});
+            onCommand(new String[]{args}, message);
             return true;
         }else if(indexof == 0){
+            System.out.println(" valide");
             String args = message.TEXT.substring(command.length()+1, message.TEXT.length());
-            onCommand(args.split(separator));
+            onCommand(args.split(separator), message);
             return true;
         }
+        System.out.println(" invalide : " + indexof + " et commande : /" + command);
         return false;
     }
     
@@ -56,5 +64,5 @@ public abstract class RegisteredCommand{
      * @param args the arguments of the command.
      * @see #setSeparator(java.lang.String) 
      */
-    public abstract void onCommand(String[] args);
+    public abstract void onCommand(String[] args, TextMessage message);
 }
