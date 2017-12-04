@@ -729,6 +729,14 @@ public abstract class Bot{
      */
     public JsonValue upload(String method, String type, File file, JsonObject parameters){
         System.out.print("Uploading " + type + " : " + file);
+        
+        if(!file.exists())
+            throw new IllegalArgumentException("Error on " + file.getAbsolutePath() + " :\nThe file doesn't exist (see File.exists()).");
+        if(!file.isFile())
+            throw new IllegalArgumentException("Error on " + file.getAbsolutePath() + " :\nThe object provided is not a file (see File.isFile()).");
+        if(!file.canRead())
+            throw new IllegalArgumentException("Error on " + file.getAbsolutePath() + " :\nThe file is not readable (see File.canRead()).");
+        
         try {
             System.out.print(" BUILD");
             MultipartUtility mu = new MultipartUtility("https://api.telegram.org/bot" + TOKEN + "/" + method);
