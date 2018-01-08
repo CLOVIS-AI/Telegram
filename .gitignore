@@ -1,7 +1,8 @@
 build/
 dist/
 !dist/javadoc
-nbproject/
+nbproject/*
+nbproject/private/
 !nbproject/project.xml
 !nbproject/project.properties
 build.xml
