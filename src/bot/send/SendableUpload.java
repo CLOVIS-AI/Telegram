@@ -5,8 +5,8 @@
  */
 package bot.send;
 
+import com.eclipsesource.json.JsonObject;
 import java.io.File;
-import minimaljson.JsonObject;
 
 /**
  * A file that can be sent by the bot.

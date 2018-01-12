@@ -5,7 +5,7 @@
  */
 package bot;
 
-import minimaljson.JsonObject;
+import com.eclipsesource.json.JsonObject;
 
 /**
  *
@@ -69,12 +69,17 @@ public class User extends Chat {
      * @return A usable link.
      */
     public String toMention(String display, Bot.ParseMode markdown){
-        if(markdown == Bot.ParseMode.MARKDOWN)
-            return "[" + display + "](tg://user?id=" + ID + ")";
-        else if(markdown == Bot.ParseMode.HTML)
-            return "<a href=\"tg://user?id=" + ID + "\">" + display + "</a>";
-        else
-            throw new IllegalArgumentException("The argument 'markdown' should be either MARKDOWN or HTML ; found : " + markdown);
+        if(markdown != null)
+            switch (markdown) {
+            case MARKDOWN:
+                return "[" + display + "](tg://user?id=" + ID + ")";
+            case HTML:
+                return "<a href=\"tg://user?id=" + ID + "\">" + display + "</a>";
+            default:
+                throw new IllegalArgumentException("The argument 'markdown' should be either MARKDOWN or HTML ; found : " + markdown);
+        }else{
+            throw new NullPointerException("The parameter 'markdown' cannot be null.");
+        }
     }
     
     /**

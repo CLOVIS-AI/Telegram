@@ -9,9 +9,9 @@ import bot.Chat;
 import bot.MandatoryFieldOmittedException;
 import bot.User;
 import bot.send.Sendable;
-import minimaljson.JsonObject;
-import minimaljson.JsonValue;
-import minimaljson.WriterConfig;
+import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
+import com.eclipsesource.json.WriterConfig;
 
 /**
  *

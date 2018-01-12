@@ -6,7 +6,7 @@
 package bot.messages;
 
 import bot.MandatoryFieldOmittedException;
-import minimaljson.JsonObject;
+import com.eclipsesource.json.JsonObject;
 
 /**
  * The basic informations a message containing a File always has.

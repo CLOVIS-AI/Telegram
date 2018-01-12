@@ -5,10 +5,8 @@
  */
 package bot.send;
 
-import bot.Bot;
 import bot.Bot.ParseMode;
-import minimaljson.JsonObject;
-import minimaljson.JsonValue;
+import com.eclipsesource.json.JsonObject;
 
 /**
  * A text message.

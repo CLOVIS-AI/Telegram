@@ -6,8 +6,8 @@
 package bot.send;
 
 import bot.messages.AudioMessage;
+import com.eclipsesource.json.JsonObject;
 import java.io.File;
-import minimaljson.JsonObject;
 
 /**
  * Use this method to send audio files, if you want Telegram clients to display

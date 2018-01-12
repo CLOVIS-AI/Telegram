@@ -6,8 +6,8 @@
 package bot.messages;
 
 import bot.MandatoryFieldOmittedException;
-import minimaljson.JsonObject;
 import bot.utils.others.PhotoSize;
+import com.eclipsesource.json.JsonObject;
 
 /**
  *

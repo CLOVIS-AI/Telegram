@@ -6,7 +6,7 @@
 package bot.utils.stickers;
 
 import bot.MandatoryFieldOmittedException;
-import minimaljson.JsonObject;
+import com.eclipsesource.json.JsonObject;
 
 /**
  * This objects describes the position on faces where a mask should be placed by default.

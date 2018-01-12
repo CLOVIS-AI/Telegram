@@ -5,10 +5,8 @@
  */
 package bot.updates;
 
-import bot.messages.NewMembers;
-import bot.messages.LeftMember;
-import minimaljson.JsonObject;
-import minimaljson.WriterConfig;
+import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.WriterConfig;
 
 /**
  * This object represents an incoming update.

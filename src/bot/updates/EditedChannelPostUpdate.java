@@ -6,7 +6,7 @@
 package bot.updates;
 
 import bot.messages.Message;
-import minimaljson.JsonObject;
+import com.eclipsesource.json.JsonObject;
 
 /**
  *

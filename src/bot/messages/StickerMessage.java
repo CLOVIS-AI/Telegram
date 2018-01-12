@@ -7,7 +7,7 @@ package bot.messages;
 
 import bot.MandatoryFieldOmittedException;
 import bot.utils.stickers.Sticker;
-import minimaljson.JsonObject;
+import com.eclipsesource.json.JsonObject;
 
 /**
  *

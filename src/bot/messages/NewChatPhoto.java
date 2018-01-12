@@ -7,8 +7,8 @@ package bot.messages;
 
 import bot.MandatoryFieldOmittedException;
 import bot.utils.others.PhotoSize;
-import minimaljson.JsonArray;
-import minimaljson.JsonObject;
+import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
 
 /**
  * A Chat photo was changed.

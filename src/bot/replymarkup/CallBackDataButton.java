@@ -5,7 +5,7 @@
  */
 package bot.replymarkup;
 
-import minimaljson.JsonObject;
+import com.eclipsesource.json.JsonObject;
 
 /**
  *

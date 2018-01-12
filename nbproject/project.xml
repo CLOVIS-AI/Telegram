@@ -6,6 +6,7 @@
             <name>Telegram</name>
             <source-roots>
                 <root id="src.dir"/>
+                <root id="src.json.dir" name="minimal-json/com.eclipsesource.json/src"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>
