@@ -6,7 +6,7 @@
 package bot.utils.others;
 
 import bot.MandatoryFieldOmittedException;
-import minimaljson.JsonObject;
+import com.eclipsesource.json.JsonObject;
 
 /**
  *

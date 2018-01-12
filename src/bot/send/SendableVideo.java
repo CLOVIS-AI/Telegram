@@ -6,7 +6,7 @@
 package bot.send;
 
 import bot.messages.VideoMessage;
-import minimaljson.JsonObject;
+import com.eclipsesource.json.JsonObject;
 import java.io.File;
 
 /**

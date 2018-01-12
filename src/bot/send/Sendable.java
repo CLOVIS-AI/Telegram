@@ -7,7 +7,7 @@ package bot.send;
 
 import bot.messages.*;
 import bot.replymarkup.ReplyMarkup;
-import minimaljson.JsonObject;
+import com.eclipsesource.json.JsonObject;
 
 /**
  * This class 

@@ -5,7 +5,7 @@
  */
 package bot.replymarkup;
 
-import minimaljson.JsonValue;
+import com.eclipsesource.json.JsonValue;
 
 /**
  * This object can be used to specify buttons to the reply.

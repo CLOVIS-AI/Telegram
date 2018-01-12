@@ -6,7 +6,7 @@
 package bot.messages;
 
 import bot.MandatoryFieldOmittedException;
-import minimaljson.JsonObject;
+import com.eclipsesource.json.JsonObject;
 
 /**
  * This message represents an audio file to be treated as music by the Telegram clients.

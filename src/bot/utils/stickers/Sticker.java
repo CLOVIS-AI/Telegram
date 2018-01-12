@@ -7,7 +7,7 @@ package bot.utils.stickers;
 
 import bot.MandatoryFieldOmittedException;
 import bot.utils.others.PhotoSize;
-import minimaljson.JsonObject;
+import com.eclipsesource.json.JsonObject;
 
 /**
  * This object represents a sticker.

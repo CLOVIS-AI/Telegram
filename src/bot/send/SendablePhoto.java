@@ -7,8 +7,8 @@ package bot.send;
 
 import bot.messages.PhotoMessage;
 import bot.utils.others.PhotoSize;
+import com.eclipsesource.json.JsonObject;
 import java.io.File;
-import minimaljson.JsonObject;
 
 /**
  *

@@ -6,8 +6,8 @@
 package bot.messages;
 
 import bot.MandatoryFieldOmittedException;
-import minimaljson.JsonArray;
-import minimaljson.JsonObject;
+import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
 
 /**
  *

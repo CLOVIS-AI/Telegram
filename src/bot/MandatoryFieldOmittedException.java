@@ -5,7 +5,7 @@
  */
 package bot;
 
-import minimaljson.JsonValue;
+import com.eclipsesource.json.JsonValue;
 
 /**
  *

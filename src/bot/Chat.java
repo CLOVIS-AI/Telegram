@@ -5,8 +5,8 @@
  */
 package bot;
 
+import com.eclipsesource.json.JsonObject;
 import java.util.Objects;
-import minimaljson.JsonObject;
 
 /**
  * 

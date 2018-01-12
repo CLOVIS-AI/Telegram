@@ -7,7 +7,7 @@ package bot.messages;
 
 import bot.MandatoryFieldOmittedException;
 import bot.User;
-import minimaljson.JsonObject;
+import com.eclipsesource.json.JsonObject;
 
 /**
  * @author CLOVIS

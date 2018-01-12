@@ -30,6 +30,11 @@ import bot.send.SendableVideo;
 import bot.updates.Update;
 import bot.utils.MultipartUtility;
 import bot.utils.others.PhotoSize;
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
+import com.eclipsesource.json.WriterConfig;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -46,11 +51,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import minimaljson.Json;
-import minimaljson.JsonArray;
-import minimaljson.JsonObject;
-import minimaljson.JsonValue;
-import minimaljson.WriterConfig;
 
 /**
  * Class that defines a bot.<br><br>
