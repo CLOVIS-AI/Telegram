@@ -158,7 +158,8 @@ public abstract class Bot{
     
     /**
      * This method is called whenever the bot recieves a new {@link Update update}.
-     * Override this method to act when this happens. This method is called in last.
+     * Override this method to act when this happens. This method is called after
+     * every other Message / Update / ... methods.
      * @param update an update from the Telegram servers
      */
     public abstract void onEveryUpdate(Update update);
