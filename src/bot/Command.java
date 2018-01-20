@@ -44,7 +44,7 @@ abstract class Command{
     public final boolean reception(TextMessage message){
         int indexof = message.TEXT.indexOf('/' + command);
         System.out.print("Test de " + message.TEXT);
-        if(separator == null){
+        if(indexof == 0 && separator == null){
             System.out.println(" valide");
             String args = message.TEXT.substring(command.length()+1, message.TEXT.length());
             onCommand(new String[]{args}, message);

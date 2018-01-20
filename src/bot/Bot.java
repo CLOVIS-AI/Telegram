@@ -51,6 +51,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * Class that defines a bot.<br><br>
@@ -79,16 +82,16 @@ import java.util.List;
  myBot.autoUpdate(); // To launch the bot (see {@link Bot#autoUpdate() autoUpdate()} for more informations).
  *     </pre>
  *   </li>
- *   <li>That's it ! You can run your code, the bot is working ! You just have to 
+ *   <li>That's it ! You can run your code, the bot is working ! You just have to
  *       fill the {@link #onEveryUpdate(bot.updates.Update) onEveryUpdate()} method now.<br>
  *       You can find more informations on the different kinds of updates {@link Update here}.
  *   </li>
  * </ol>
- * 
+ *
  * @author CLOVIS
  */
 public abstract class Bot{
-    
+
     /** Token as provided by BotFather. */
     private final String TOKEN;
     /** User ID of this bot. */
@@ -97,20 +100,20 @@ public abstract class Bot{
     public final String NAME;
     /** Username of this bot. */
     public final String USERNAME;
-    
+
     private final List<Command> commands;
-    
+
     /** Time between two updates. */
     private long updateTimeout = 1000;
-    
+
     private boolean autoUpdateActivated = false;
-    
+
     private long maxUpdateID = 0;
-    
+
     { // Initialization
         commands = new ArrayList<>();
     }
-    
+
     /**
      * Creates a bot and connects it to the Telegram servers, and prints to the
      * standard output the identity of the bot.<br>
@@ -121,28 +124,28 @@ public abstract class Bot{
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public Bot(String token){
         System.out.println("Connecting ...");
-        
+
         TOKEN = token;
         JsonObject me = http("getMe").asObject().get("result").asObject();
         ID = me.getLong("id", 0);
         NAME = me.getString("first_name", null);
         USERNAME = me.getString("username", null);
-        
+
         if(ID == 0 || NAME == null || USERNAME == null)
             throw new IllegalArgumentException("This bot has issues.");
-        
+
         System.out.println("Hello, I am " + NAME + ".\n    Username : @"
                 + USERNAME + "\n    ID : " + ID);
-        
+
         setup();
     }
-    
+
     /**
      * Use this method to initialize your values.
      * @see #getChat(long) Create a Chat
      */
     public void setup(){}
-    
+
     /**
      * Sets the frequency of the automatical updates.
      * @param time time between each update, in seconds ; default = 1000s
@@ -155,7 +158,7 @@ public abstract class Bot{
             throw new IllegalArgumentException("The argument 'time' should be greater or equal to 100 : " + time);
         }
     }
-    
+
     /**
      * This method is called whenever the bot recieves a new {@link Update update}.
      * Override this method to act when this happens. This method is called after
@@ -163,7 +166,7 @@ public abstract class Bot{
      * @param update an update from the Telegram servers
      */
     public abstract void onEveryUpdate(Update update);
-    
+
     /**
      * This method is called when a new message is sent in a group where the bot is.
      * @param message the message that was sent
@@ -177,7 +180,7 @@ public abstract class Bot{
     public void onNewMessage(VoiceMessage message)      {}
     public void onNewMessage(VideoMessage message)      {}
     public void onNewMessage(VideoNoteMessage message)  {}
-    
+
     /**
      * This method is called when a message is edited in a group where the bot is.
      * @param message the message that was edited
@@ -191,7 +194,7 @@ public abstract class Bot{
     public void onEditedMessage(VoiceMessage message)      {}
     public void onEditedMessage(VideoMessage message)      {}
     public void onEditedMessage(VideoNoteMessage message)  {}
-    
+
     /**
      * This method is called when a message is sent in a channel where the bot is.
      * @param message the message that was sent
@@ -205,7 +208,7 @@ public abstract class Bot{
     public void onNewPost(VoiceMessage message)      {}
     public void onNewPost(VideoMessage message)      {}
     public void onNewPost(VideoNoteMessage message)  {}
-    
+
     /**
      * This method is called when a message is edited in a channel where the bot is.
      * @param message the message that was edited
@@ -219,29 +222,31 @@ public abstract class Bot{
     public void onEditedPost(VoiceMessage message)      {}
     public void onEditedPost(VideoMessage message)      {}
     public void onEditedPost(VideoNoteMessage message)  {}
-    
+
     /**
      * This method is called when new users join a chat where the bot is
      * (the bot itself may be one of these members).
      * @param members a Message object of the members who joined.
      */
     public void onMembersJoining(NewMembers members){}
-    
+
     /**
      * This method is called when a user leaves a chat where the bot is
-     * (the use may be the bot itself).
+     * (the user may be the bot itself).
      * @param member a Message object of the member who left.
      */
     public void onMemberLeaving(LeftMember member){}
-    
+
     /**
      * This method is called when a chat's photo is modified.
      * @param photo a Message object of the photo that changed
      */
     public void onNewChatPhoto(NewChatPhoto photo){}
-    
+
     /**
-     * Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
+     * Use this method to get up-to-date information about the chat
+     * (current name of the user for one-on-one conversations, current username
+     * of a user, group or channel, etc.). Returns a Chat object on success.
      * @param id unique identifier for the target chat
      * @return The Chat object.
      */
@@ -250,9 +255,12 @@ public abstract class Bot{
         j.add("chat_id", id);
         return Chat.newChat(((JsonObject)http("getChat", j)).get("result").asObject());
     }
-    
+
     /**
-     * Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
+     * Use this method to get up-to-date information about the chat
+     * (current name of the user for one-on-one conversations,
+     * current username of a user, group or channel, etc.).
+     * Returns a Chat object on success.
      * @param username unique identifier for the target chat
      * @return The Chat object.
      */
@@ -261,16 +269,18 @@ public abstract class Bot{
         j.add("chat_id", username);
         return Chat.newChat(((JsonObject)http("getChat", j)).get("result").asObject());
     }
-    
+
     /**
-     * Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
+     * Use this method to get up-to-date information about the chat
+     * (current name of the user for one-on-one conversations, current username
+     * of a user, group or channel, etc.). Returns a Chat object on success.
      * @param chat the Chat you want more infos on
      * @return The Chat object.
      */
     public Chat getChat(Chat chat){
         return getChat(chat.ID);
     }
-    
+
     /**
      * Use this method to get the photos of a chat.
      * @param chat the Chat you want more infos on
@@ -279,16 +289,18 @@ public abstract class Bot{
     public Chat.Photo getPhotos(Chat chat){
         return getChat(chat).PHOTO;
     }
-    
+
     /**
-     * Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
-     * @param user the Chat you want more infos on
-     * @return The Chat object.
+     * Use this method to get up to date information about the user
+     * (current name of the user for one-on-one conversations, current username
+     * of a user, etc.). Returns a User object on success.
+     * @param user the User you want more infos on
+     * @return The User object.
      */
     public User getUser(User user){
         return (User)getChat(user);
     }
-    
+
     /**
      * Connects to the Telegram server to get new updates, then calls
      * {@link #onEveryUpdate(bot.updates.Update) onEveryUpdate()} on every update.
@@ -369,7 +381,7 @@ public abstract class Bot{
         }
         System.gc();
     }
-    
+
     /**
      * Call to get automatical updates. This method will never end, as long as
      * the thread calling it is alive.<br>
@@ -382,7 +394,7 @@ public abstract class Bot{
             throw new IllegalThreadStateException("This method cannot be called by two threads.");
         }
         autoUpdateActivated = true;
-        
+
         while(Thread.currentThread().isAlive()){
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             System.out.println(dateFormat.format(new Date()) + "\tAuto-updating bot ...");
@@ -391,9 +403,9 @@ public abstract class Bot{
         }
         autoUpdateActivated = false;
     }
-    
+
     // ******************************** METHODS ********************************
-    
+
     /**
      * Forwards a message and notifies the users in the group.<br><br>
      * Same as calling {@link #forward(bot.messages.Message, bot.Chat, boolean) forward}<code>(message, destination, true)</code>.
@@ -404,7 +416,7 @@ public abstract class Bot{
     public final Message forward(Message message, Chat destination){
         return forward(message, destination, true);
     }
-    
+
     /**
      * Forwards a message.
      * @param message which message the bot should forward
@@ -420,13 +432,13 @@ public abstract class Bot{
                        message.CHAT.ID,
                        message.ID, notification);
     }
-    
+
     /**
      * Forwards a message.
      * @param destination destination of the forward
      * @param source source of the forward
      * @param message the message
-     * @deprecated 
+     * @deprecated
      * @return The sent message.
      */
     public final Message forward(Chat destination, Chat source, Message message){
@@ -434,7 +446,7 @@ public abstract class Bot{
                        source.ID,
                        message.ID, true);
     }
-    
+
     /**
      * Forwards a message
      * @param destinationID the destination
@@ -451,7 +463,7 @@ public abstract class Bot{
         j.add("disable_notification", !notification);
         return Message.newMessage(((JsonObject)http("forwardMessage", j)).get("result").asObject());
     }
-    
+
     /**
      * Sends any message.
      * @param message the message
@@ -471,55 +483,55 @@ public abstract class Bot{
         }
         return Message.newMessage(((JsonObject)http(message.methodName(), j)).get("result").asObject());
     }
-    
+
     /**
      * Sends a text message.<br><br>
      * To get access to more options, use {@link #send(bot.send.Sendable, bot.Chat) }
      * with {@link SendableText}
-     * @param text text of the message 
+     * @param text text of the message
      * @param chat the chat where it should be sent
      * @return The sent message.
      */
     public Message send(String text, Chat chat){
         return send(new SendableText(text), chat);
     }
-    
+
     /**
      * Sends a photo.<br><br>
      * To get access to more options, use {@link #send(bot.send.Sendable, bot.Chat) }
      * with {@link SendablePhoto}
-     * @param photo photo you want to send 
+     * @param photo photo you want to send
      * @param chat the chat where it should be sent
      * @return The sent message.
      */
     public Message send(PhotoMessage photo, Chat chat){
         return send(photo(photo), chat);
     }
-    
+
     /**
      * Sends an audio message.<br><br>
      * To get access to more options, use {@link #send(bot.send.Sendable, bot.Chat) }
      * with {@link SendableAudio}
-     * @param audio audio you want to send 
+     * @param audio audio you want to send
      * @param chat the chat where it should be sent
      * @return The sent message.
      */
     public Message send(AudioMessage audio, Chat chat){
         return send(audio(audio), chat);
     }
-    
+
     /**
      * Sends a video message.<br><br>
      * To get access to more options, use {@link #send(bot.send.Sendable, bot.Chat) }
      * with {@link SendableVideo}
-     * @param video video you want to send 
+     * @param video video you want to send
      * @param chat the chat where it should be sent
      * @return The sent message.
      */
     public Message send(VideoMessage video, Chat chat){
         return send(video(video), chat);
     }
-    
+
     /**
      * Replies to a message.
      * @param message the message you want to send
@@ -540,7 +552,7 @@ public abstract class Bot{
         }
         return Message.newMessage(((JsonObject)http(message.methodName(), j)).get("result").asObject());
     }
-    
+
     /**
      * Replies with a text message.<br><br>
      * To get access to more options, use {@link #reply(bot.send.Sendable, bot.messages.Message) reply(Sendable, Message) }
@@ -552,7 +564,7 @@ public abstract class Bot{
     public Message reply(String text, Message replyTo){
         return reply(new SendableText(text), replyTo);
     }
-    
+
     /**
      * Replies with an audio message.<br><br>
      * To get access to more options, use {@link #reply(bot.send.Sendable, bot.messages.Message) }
@@ -564,31 +576,31 @@ public abstract class Bot{
     public Message reply(PhotoMessage photo, Message message){
         return reply(photo(photo), message);
     }
-    
+
     /**
      * Replies with an audio message.<br><br>
      * To get access to more options, use {@link #reply(bot.send.Sendable, bot.messages.Message) }
      * with {@link SendableAudio}
-     * @param audio audio you want to send 
+     * @param audio audio you want to send
      * @param message the message you're replying to
      * @return The sent message.
      */
     public Message reply(AudioMessage audio, Message message){
         return reply(audio(audio), message);
     }
-    
+
     /**
      * Replies with an audio message.<br><br>
      * To get access to more options, use {@link #reply(bot.send.Sendable, bot.messages.Message) }
      * with {@link SendableVideo}
-     * @param video video you want to send 
+     * @param video video you want to send
      * @param message the message you're replying to
      * @return The sent message.
      */
     public Message reply(VideoMessage video, Message message){
         return reply(video(video), message);
     }
-    
+
     /**
      * Convenience method for text messages.
      * @param text the text of the message
@@ -597,7 +609,7 @@ public abstract class Bot{
     public SendableText text(String text){
         return new SendableText(text);
     }
-    
+
     /**
      * Convenience method for photo messages.
      * @param url the url of the photo to send
@@ -606,7 +618,7 @@ public abstract class Bot{
     public SendablePhoto photo(String url){
         return new SendablePhoto(url);
     }
-    
+
     /**
      * Convenience method for photo messages.
      * @param photo the photo to send again
@@ -615,7 +627,7 @@ public abstract class Bot{
     public SendablePhoto photo(PhotoMessage photo){
         return new SendablePhoto(photo);
     }
-    
+
     /**
      * Convenience method for photo messages.
      * @param photo the photo to send again
@@ -624,7 +636,7 @@ public abstract class Bot{
     public SendablePhoto photo(PhotoSize photo){
         return new SendablePhoto(photo);
     }
-    
+
     /**
      * Convenience method for photo messages.
      * @param file the photo to upload
@@ -633,7 +645,7 @@ public abstract class Bot{
     public SendablePhoto photo(File file){
         return new SendablePhoto(file);
     }
-    
+
     /**
      * Convenience method for audio messages.
      * @param audio the audio to send again
@@ -642,7 +654,7 @@ public abstract class Bot{
     public SendableAudio audio(AudioMessage audio){
         return new SendableAudio(audio);
     }
-    
+
     /**
      * Convenience method for audio messages.
      * @param url the url of the audio message
@@ -651,7 +663,7 @@ public abstract class Bot{
     public SendableAudio audio(String url){
         return new SendableAudio(url);
     }
-    
+
     /**
      * Convenience method for audio messages.
      * @param file the file you want to upload
@@ -660,7 +672,7 @@ public abstract class Bot{
     public SendableAudio audio(File file){
         return new SendableAudio(file);
     }
-    
+
     /**
      * Convenience method for video messages.
      * @param url the url of the video message
@@ -669,7 +681,7 @@ public abstract class Bot{
     public SendableVideo video(String url){
         return new SendableVideo(url);
     }
-    
+
     /**
      * Convenience method for video messages.
      * @param message the video you want to resend
@@ -678,7 +690,7 @@ public abstract class Bot{
     public SendableVideo video(VideoMessage message){
         return new SendableVideo(message);
     }
-    
+
     /**
      * Convenience method for video messages.
      * @param file the video you want to upload
@@ -687,18 +699,54 @@ public abstract class Bot{
     public SendableVideo video(File file){
         return new SendableVideo(file);
     }
-    
+
     /**
      * Registers a new command.
      * @param command the command to be registered
+     * @see #registerNewCommand(java.lang.String, java.util.function.BiConsumer) Register a command using a lambda
      */
     public void registerNewCommand(Command command){
         commands.add(command);
     }
-    
+
+    /**
+     * Lambda-compatible method for registering new commands.
+     * <p>The arguments given to the lambda are an array of Strings containing
+     * the parameters of the command (the rest of the text message, split using
+     * <code>separator</code>) and the original text message (to allow replies
+     * and forwardings).
+     * @param command the command name
+     * @param action what the bot should do when it recieves this command
+     * @see #registerNewCommand(bot.Command) Use anonymous class instead of lambda
+     * @see #registerNewCommand(bot.Command, java.util.BiConsumer<String[], bot.message.TextMessage>) Use the default separator
+     */
+    public void registerNewCommand(String command, BiConsumer<String[], TextMessage> action, String separator){
+        registerNewCommand(new Command(command) {
+            @Override
+            public void onCommand(String[] args, TextMessage message) {
+                action.accept(args, message);
+            }
+        }.setSeparator(separator));
+    }
+
+    /**
+     * Lambda-compatible method for registering new commands.
+     * <p>The arguments given to the lambda are an array of Strings containing
+     * the parameters of the command (the rest of the text message, split using
+     * a single space character) and the original text message (to allow replies
+     * and forwardings).
+     * @param command the command name
+     * @param action what the bot should do when it recieves this command
+     * @see #registerNewCommand(bot.Command) Use anonymous class instead of lambda
+     * @see #registerNewCommand(bot.Command, java.util.BiConsumer<String[], bot.message.TextMessage>, java.util.String) Specify your own separator
+     */
+    public void registerNewCommand(String command, BiConsumer<String[], TextMessage> action){
+        registerNewCommand(command, action, " ");
+    }
+
     /**
      * Sends a HTTP request to the Telegram Bot API.<br/><br/>
-     * This method is greatly inspired from 
+     * This method is greatly inspired from
      * <a href="https://stackoverflow.com/questions/4205980/java-sending-http-parameters-via-post-method-easily">Stack Overflow</a>.
      * @param method the command to the Telegram servers
      * @param parameters the parameters required by the servers
@@ -718,9 +766,9 @@ public abstract class Bot{
             conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
             conn.setDoOutput(true);
             conn.getOutputStream().write(postDataBytes);
-            
+
             Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            
+
             String output = "";
             for(int c; (c = in.read()) >= 0;){
                 output += (char)c;
@@ -736,7 +784,7 @@ public abstract class Bot{
         }
         return null;
     }
-    
+
     /**
      * Sends a HTTP request to the Telegram Bot API.
      * @param method the command to the Telegram servers.
@@ -746,7 +794,7 @@ public abstract class Bot{
     private JsonValue http(String method){
         return http(method, Json.parse("{\"status\":null}").asObject());
     }
-    
+
     /**
      * Uploads a file.
      * @param method the method of the Telegram bot API (eg. sendPhoto)
@@ -757,14 +805,14 @@ public abstract class Bot{
      */
     public JsonValue upload(String method, String type, File file, JsonObject parameters){
         System.out.print("Uploading " + type + " : " + file);
-        
+
         if(!file.exists())
             throw new IllegalArgumentException("Error on " + file.getAbsolutePath() + " :\nThe file doesn't exist (see File.exists()).");
         if(!file.isFile())
             throw new IllegalArgumentException("Error on " + file.getAbsolutePath() + " :\nThe object provided is not a file (see File.isFile()).");
         if(!file.canRead())
             throw new IllegalArgumentException("Error on " + file.getAbsolutePath() + " :\nThe file is not readable (see File.canRead()).");
-        
+
         try {
             System.out.print(" BUILD");
             MultipartUtility mu = new MultipartUtility("https://api.telegram.org/bot" + TOKEN + "/" + method);
@@ -782,7 +830,7 @@ public abstract class Bot{
             throw new CannotSendMessageException(ex, parameters, null);
         }
     }
-    
+
     /**
      * If you want Telegram to show bold, italic, fixed-width texts or URLs.<br>
      * The syntax depends on your choice ; see them below.
@@ -799,7 +847,7 @@ public abstract class Bot{
                 return "Markdown";
             }
         },
-        
+
         /**
          * <a href="https://core.telegram.org/bots/api#formatting-options">Formatting options.</a>
          */
@@ -810,7 +858,7 @@ public abstract class Bot{
             }
         }
     }
-    
+
     public class CannotSendMessageException extends RuntimeException {
         public CannotSendMessageException(IOException ex, JsonValue j, HttpURLConnection conn){
             super("ERROR WHILE SENDING MESSAGE :\n" + ex.getMessage()
@@ -818,7 +866,7 @@ public abstract class Bot{
                 + "\nFROM SERVER :\n" + (conn != null ? MultipartUtility.getStringFromInputStream(conn.getErrorStream()) : "NO DATA"));
         }
     }
-    
+
     /**
      * A command object.
      */
