@@ -22,6 +22,7 @@ import bot.messages.LeftMember;
 import bot.messages.NewChatPhoto;
 import bot.updates.MessageUpdate;
 import bot.messages.NewMembers;
+import bot.messages.PinnedMessage;
 import bot.send.Sendable;
 import bot.send.SendableAudio;
 import bot.send.SendablePhoto;
@@ -242,6 +243,13 @@ public abstract class Bot{
      * @param photo a Message object of the photo that changed
      */
     public void onNewChatPhoto(NewChatPhoto photo){}
+    
+    /**
+     * This method is called when a message is pinned.
+     * @param message a Message object containing the identity of the person who
+     * pinned the message, as well as the actual message.
+     */
+    public void onPinnedMessage(PinnedMessage message){}
 
     /**
      * Use this method to get up-to-date information about the chat
@@ -370,6 +378,8 @@ public abstract class Bot{
                     onMemberLeaving((LeftMember)m);
                 }else if(m instanceof NewChatPhoto){
                     onNewChatPhoto((NewChatPhoto)m);
+                }else if(m instanceof PinnedMessage){
+                    onPinnedMessage((PinnedMessage)m);
                 }else{
                     throw new UnsupportedOperationException("Unsupported message update : " + m.toString());
                 }

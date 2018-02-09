@@ -10,7 +10,8 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 
 /**
- *
+ * Represents user(s) joining the group.
+ * <p>You can use {@link Message#FROM} to know who added them.
  * @author CLOVIS
  */
 public class NewMembers extends Message {
@@ -36,6 +37,6 @@ public class NewMembers extends Message {
         StringBuilder sb = new StringBuilder();
         for(User u : USERS)
             sb.append(u.toString());
-        return super.toString() + sb.toString() + " joined the group";
+        return super.toString() + " added " + sb.toString() + " to this group";
     }
 }
