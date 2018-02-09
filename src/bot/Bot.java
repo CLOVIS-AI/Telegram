@@ -54,8 +54,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * Class that defines a bot.<br><br>
@@ -778,7 +776,7 @@ public abstract class Bot{
         try {
             url = new URL("https://api.telegram.org/bot" + TOKEN + "/" + method);
             byte[] postDataBytes = parameters.toString().getBytes("UTF-8");
-
+            
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");

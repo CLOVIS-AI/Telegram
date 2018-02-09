@@ -42,20 +42,16 @@ abstract class Command{
      * @return <code>true</code> if this command is appliable.
      */
     public final boolean reception(TextMessage message){
-        int indexof = message.TEXT.indexOf('/' + command);
-        System.out.print("Test de " + message.TEXT);
+        String text = message.TEXT;
+        int indexof = text.indexOf('/' + command);
+        
         if(indexof == 0 && separator == null){
-            System.out.println(" valide");
-            String args = message.TEXT.substring(command.length()+1, message.TEXT.length());
-            onCommand(new String[]{args}, message);
+            onCommand(new String[]{cleanArgs(text)}, message);
             return true;
         }else if(indexof == 0){
-            System.out.println(" valide");
-            String args = message.TEXT.substring(command.length()+1, message.TEXT.length());
-            onCommand(args.split(separator), message);
+            onCommand(cleanArgs(text).split(separator), message);
             return true;
         }
-        System.out.println(" invalide : " + indexof + " et commande : /" + command);
         return false;
     }
     
@@ -65,4 +61,8 @@ abstract class Command{
      * @see #setSeparator(java.lang.String) 
      */
     public abstract void onCommand(String[] args, TextMessage message);
+    
+    public static final String cleanArgs(String args){
+        return args.substring(args.indexOf(' ')+1, args.length());
+    }
 }
