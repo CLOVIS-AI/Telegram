@@ -108,6 +108,13 @@ public class Message{
         return CHAT.toString() + " > " + (FROM != null ? FROM.toString() : (AUTHOR_SIGNATURE == null ? "" : AUTHOR_SIGNATURE));
     }
     
+    /**
+     * Searches for the correct subclass of Message for a specific JSON-encoded 
+     * Message object, instantiates it, then returns it.
+     * @param json data representing a Message as sent by the Telegram servers
+     * @return The corresponding Message object.
+     * @throws MandatoryFieldOmittedException if any mandatory field is omitted.
+     */
     public static final Message newMessage(JsonObject json) throws MandatoryFieldOmittedException{
         if(json.getString("text", null) != null){ return new TextMessage(json); }
         else if(json.getInt("duration", -1) != -1){ return new AudioMessage(json); }
@@ -121,8 +128,9 @@ public class Message{
         else if(json.get("left_chat_member") != null){ return new LeftMember(json); }
         else if(json.get("audio") != null){ return new AudioMessage(json); }
         else if(json.get("new_chat_photo") != null){ return new NewChatPhoto(json); }
+        else if(json.get("pinned_message") != null){ return new PinnedMessage(json); }
         else{
-            throw new UnsupportedOperationException("This type of message is not supported : " + json.toString(WriterConfig.PRETTY_PRINT));
+            throw new UnsupportedOperationException("This type of message is not yet supported : " + json.toString(WriterConfig.PRETTY_PRINT));
         }
     }
     
