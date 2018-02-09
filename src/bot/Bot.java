@@ -6,6 +6,7 @@
 package bot;
 
 import bot.messages.AudioMessage;
+import bot.messages.ChatCreated;
 import bot.messages.DocumentMessage;
 import bot.messages.Message;
 import bot.messages.PhotoMessage;
@@ -250,6 +251,12 @@ public abstract class Bot{
      * pinned the message, as well as the actual message.
      */
     public void onPinnedMessage(PinnedMessage message){}
+    
+    /**
+     * This method is called when a chat is created.
+     * @param chat a Message object containing the data of the Chat.
+     */
+    public void onChatCreated(ChatCreated chat){}
 
     /**
      * Use this method to get up-to-date information about the chat
@@ -380,6 +387,8 @@ public abstract class Bot{
                     onNewChatPhoto((NewChatPhoto)m);
                 }else if(m instanceof PinnedMessage){
                     onPinnedMessage((PinnedMessage)m);
+                }else if(m instanceof ChatCreated){
+                    onChatCreated((ChatCreated)m);
                 }else{
                     throw new UnsupportedOperationException("Unsupported message update : " + m.toString());
                 }

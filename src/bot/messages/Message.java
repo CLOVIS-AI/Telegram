@@ -129,6 +129,10 @@ public class Message{
         else if(json.get("audio") != null){ return new AudioMessage(json); }
         else if(json.get("new_chat_photo") != null){ return new NewChatPhoto(json); }
         else if(json.get("pinned_message") != null){ return new PinnedMessage(json); }
+        
+        else if(json.get("group_chat_created") != null ||
+                json.get("channel_created") != null ||
+                json.get("supergroup_chat_created") != null){ return new ChatCreated(json); }
         else{
             throw new UnsupportedOperationException("This type of message is not yet supported : " + json.toString(WriterConfig.PRETTY_PRINT));
         }
